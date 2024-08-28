@@ -1,14 +1,5 @@
-<script setup>
-import SwitchButton from '@/components/modules/SwitchButton/SwitchButton.vue'
-</script>
+<script setup></script>
 
-<template>
-  <div class="datav-container wh-full flex-col p-20">
-    <el-card class="h-full"
-      >1212
-      <SwitchButton />
-    </el-card>
-  </div>
-</template>
+<template>系统首页</template>
 
 <style lang="scss" scoped></style>

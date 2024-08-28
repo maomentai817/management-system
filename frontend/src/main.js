@@ -10,7 +10,7 @@ import ELementPlus from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 // 引入初始化全局样式
-import '@/styles/common.scss'
+// import '@/styles/common.scss'
 // 夜间模式样式
 import 'element-plus/theme-chalk/dark/css-vars.css'
 // 引入全局组件
