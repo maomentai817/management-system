@@ -1,7 +1,8 @@
 <script setup></script>
 
 <template>
-  <div></div>
+  nav
+  <SwitchButton />
 </template>
 
 <style lang="scss" scoped></style>
