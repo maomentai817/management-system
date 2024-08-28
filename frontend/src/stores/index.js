@@ -6,4 +6,5 @@ pinia.use(piniaPluginPersistedstate)
 
 export default pinia
 
-// export * from './modules/xxx'
+export * from './modules/user.js'
+export * from './modules/consume.js'

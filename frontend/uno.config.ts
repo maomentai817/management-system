@@ -21,7 +21,13 @@ export default defineConfig({
     'f-e': 'flex justify-end items-center',
     'text-overflow': 'truncate',
     'wh-full': 'w-full h-full',
-    'f-items-c': 'flex items-center'
+    'wh-screen': 'w-screen h-screen',
+    'f-items-c': 'flex items-center',
+    'fd-col': 'flex flex-col',
+    'tf-0': 'top-0 left-0',
+    'tf-50': 'top-50% left-50%',
+    'tf-center': 'top-50% left-50% translate-x--50% translate-y--50%',
+    'm-0-auto': 'm-y-0 m-x-auto'
   },
   rules: [
     [/^b-(\d+)$/, (match) => ({ 'border-width': `${match[1]}px` })],
@@ -87,6 +93,10 @@ export default defineConfig({
       /^hl-(\d+)$/,
       (match) => ({ height: `${match[1]}px`, 'line-height': `${match[1]}px` })
     ],
-    [/^fs-(\d+)$/, (match) => ({ 'font-size': `${match[1]}px` })]
+    [/^fs-(\d+)$/, (match) => ({ 'font-size': `${match[1]}px` })],
+    [
+      /^wh-(\d+)$/,
+      (match) => ({ width: `${match[1]}px`, height: `${match[1]}px` })
+    ]
   ]
 })
