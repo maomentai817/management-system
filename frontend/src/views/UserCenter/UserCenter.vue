@@ -2,7 +2,7 @@
 
 <template>
   <div class="income-container h-full">
-    <CardContainer class="h-full"> 成员信息</CardContainer>
+    <CardContainer class="h-full"> 用户中心</CardContainer>
   </div>
 </template>
 

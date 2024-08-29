@@ -26,7 +26,7 @@ defineProps({
 <style lang="scss" scoped>
 .page-container {
   box-sizing: border-box;
-
+  height: inherit;
   :deep(.el-card__header) {
     padding-top: 8px;
     padding-bottom: 8px;

@@ -35,6 +35,11 @@ const router = createRouter({
           path: '/outcome',
           name: 'OutcomePage',
           component: () => import('@/views/OutcomePage/OutcomePage.vue')
+        },
+        {
+          path: '/user-center',
+          name: 'UserCenter',
+          component: () => import('@/views/UserCenter/UserCenter.vue')
         }
       ]
     },

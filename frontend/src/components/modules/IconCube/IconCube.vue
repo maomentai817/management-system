@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps } from 'vue'
 import { ElTooltip } from 'element-plus'
 
 defineProps({
@@ -17,13 +16,17 @@ defineProps({
   },
   showAfter: {
     type: Number,
-    default: 500 // 延迟显示时间（毫秒）
+    default: 200 // 延迟显示时间（毫秒）
+  },
+  isDark: {
+    type: Boolean,
+    default: false
   }
 })
 </script>
 
 <template>
-  <div class="icon-cube f-c cursor-pointer" :class="`wh-${size}`">
+  <div class="icon-cube f-c cursor-pointer wh-40" :class="isDark ? 'dark' : ''">
     <el-tooltip
       :content="label"
       :show-after="showAfter"
@@ -43,6 +46,11 @@ defineProps({
     background-color: #2e333817;
     transition-duration: 500ms;
     border-radius: 8px;
+  }
+}
+.dark {
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.3);
   }
 }
 </style>

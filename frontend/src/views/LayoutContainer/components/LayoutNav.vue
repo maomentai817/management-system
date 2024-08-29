@@ -1,19 +1,27 @@
 <script setup>
-import { Fold, Expand, Platform, FullScreen } from '@element-plus/icons-vue'
+import {
+  Fold,
+  Expand,
+  Platform,
+  FullScreen,
+  UserFilled,
+  SwitchButton as SwitchButton1,
+  WarningFilled
+} from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
-import { useGlobalStore } from '@/stores'
+import { ref, markRaw } from 'vue'
+import { useGlobalStore, useUserStore } from '@/stores'
 import SwitchButton from '@/components/modules/SwitchButton/SwitchButton.vue'
 import avatarImg from '@/assets/images/qianxun.jpg'
 
 const globalStore = useGlobalStore()
+const userStore = useUserStore()
 const router = useRouter()
 const goHome = () => {
   router.push('/data-view')
 }
 const toggleCollapse = () => {
   globalStore.setCollapse(!globalStore.isCollapse)
-  console.log(1)
 }
 
 const isFullScreen = ref(false)
@@ -45,6 +53,30 @@ const toggleFullScreen = () => {
   }
   isFullScreen.value = !isFullScreen.value
 }
+
+const navigateToUserCenter = () => {
+  router.push('/user-center')
+}
+const darkBtn = ref(null)
+const logout = () => {
+  ElMessageBox.confirm('是否确认退出登录?', '提示', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning',
+    icon: markRaw(WarningFilled)
+  }).then(() => {
+    // 清除 dark-mode
+    if (globalStore.isDark) {
+      darkBtn.value.triggerClick()
+    }
+    userStore.clearUserInfo()
+    globalStore.localStorageClear()
+    setTimeout(() => {
+      router.replace('/login')
+      ElMessage.success('退出成功')
+    }, 1000)
+  })
+}
 </script>
 
 <template>
@@ -53,6 +85,7 @@ const toggleFullScreen = () => {
       <IconCube
         @click="toggleCollapse"
         :label="!globalStore.isCollapse ? '折叠菜单' : '展开菜单'"
+        :isDark="globalStore.isDark"
       >
         <Fold v-if="!globalStore.isCollapse" />
         <Expand v-else />
@@ -66,20 +99,40 @@ const toggleFullScreen = () => {
     </div>
     <div class="right-content f-c mr-20">
       <div class="full-screen f-c" @click="toggleFullScreen">
-        <IconCube :label="isFullScreen ? '退出全屏' : '全屏'">
+        <IconCube
+          :label="isFullScreen ? '退出全屏' : '全屏'"
+          :isDark="globalStore.isDark"
+        >
           <FullScreen />
         </IconCube>
       </div>
       <div class="locale"></div>
       <div class="dark-mode m-x-15 f-c">
-        <SwitchButton />
+        <SwitchButton ref="darkBtn" />
       </div>
-      <div class="user-container f-c p-x-10 p-y-4 cursor-pointer">
-        <div class="avatar-container mr-6 f-c">
-          <el-avatar :src="avatarImg" />
+      <el-dropdown size="large" type="primary" trigger="click">
+        <div
+          class="user-container f-c p-x-10 p-y-4 cursor-pointer"
+          :class="globalStore.isDark ? 'dark' : ''"
+        >
+          <div class="avatar-container mr-6 f-c">
+            <el-avatar :src="avatarImg" />
+          </div>
+          <div class="username-container">猫闷台817</div>
         </div>
-        <div class="username-container">猫闷台817</div>
-      </div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="navigateToUserCenter">
+              <el-icon><UserFilled /></el-icon>
+              <span class="ml-4">用户中心</span>
+            </el-dropdown-item>
+            <el-dropdown-item @click="logout">
+              <el-icon><SwitchButton1 /></el-icon>
+              <span class="ml-4">退出登录</span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
     </div>
   </div>
 </template>
@@ -90,6 +143,11 @@ const toggleFullScreen = () => {
     background-color: #2e333817;
     transition-duration: 500ms;
     border-radius: 8px;
+  }
+}
+.dark {
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.3);
   }
 }
 </style>

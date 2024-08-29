@@ -10,16 +10,25 @@ export const useGlobalStore = defineStore(
     }
 
     const isCollapse = ref(
-      JSON.parse(localStorage.getItem('global')).isCollapse || false
+      JSON.parse(localStorage.getItem('global'))?.isCollapse || false
     )
     const setCollapse = (flag) => {
       isCollapse.value = flag
+    }
+
+    const localStorageClear = () => {
+      localStorage.setItem(
+        'global',
+        JSON.stringify({ isDark: false, isCollapse: false })
+      )
+      localStorage.setItem('isDark', false)
     }
     return {
       isDark,
       setDark,
       isCollapse,
-      setCollapse
+      setCollapse,
+      localStorageClear
     }
   },
   { persist: true }
