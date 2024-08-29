@@ -1,9 +1,11 @@
 <script setup>
 import LayoutAside from './components/LayoutAside.vue'
 import LayoutNav from './components/LayoutNav.vue'
-import { useGlobalStore } from '@/stores'
+import { useGlobalStore, useMemberStore } from '@/stores'
 
 const globalStore = useGlobalStore()
+const memberStore = useMemberStore()
+memberStore.initMembers()
 </script>
 
 <template>
@@ -16,7 +18,7 @@ const globalStore = useGlobalStore()
         <el-header class="pr-0!">
           <LayoutNav></LayoutNav>
         </el-header>
-        <el-main>
+        <el-main class="pt-0!">
           <!-- 二级路由出口 -->
           <router-view></router-view>
         </el-main>

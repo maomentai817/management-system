@@ -9,3 +9,4 @@ export default pinia
 export * from './modules/user.js'
 export * from './modules/consume.js'
 export * from './modules/global.js'
+export * from './modules/member.js'
