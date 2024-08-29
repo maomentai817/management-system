@@ -23,12 +23,34 @@ export const useGlobalStore = defineStore(
       )
       localStorage.setItem('isDark', false)
     }
+
+    // tab-panels
+    const tabPanels = ref(
+      JSON.parse(localStorage.getItem('global'))?.tabPanels || []
+    )
+    const addPanels = (panel) => {
+      const index = tabPanels.value.findIndex(
+        (item) => item.path === panel.path
+      )
+      if (index === -1) {
+        tabPanels.value.push(panel)
+      }
+    }
+    const removePanels = (panel) => {
+      const index = tabPanels.value.findIndex((item) => item.path === panel)
+      if (index !== -1) {
+        tabPanels.value.splice(index, 1)
+      }
+    }
     return {
       isDark,
       setDark,
       isCollapse,
       setCollapse,
-      localStorageClear
+      localStorageClear,
+      tabPanels,
+      addPanels,
+      removePanels
     }
   },
   { persist: true }

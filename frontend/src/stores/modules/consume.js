@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { getIncomeAPI, getOutcomeAPI, getConsumeAPI } from '@/api/consume'
+import {
+  getIncomeAPI,
+  getOutcomeAPI,
+  getConsumeAPI,
+  getAllTagsAPI
+} from '@/api/consume'
 
 export const useConsumeStore = defineStore('consume', () => {
   // state
@@ -24,10 +29,19 @@ export const useConsumeStore = defineStore('consume', () => {
     const res = await getOutcomeAPI()
     outcomeList.value = res.data
   }
+
+  // 获取 tags
+  const tags = ref([])
+  const getTags = async () => {
+    const res = await getAllTagsAPI()
+    tags.value = res.data
+  }
   return {
     consumeList,
     incomeList,
     outcomeList,
+    tags,
+    getTags,
     getIncomeData,
     getOutcomeData,
     getConsumeData

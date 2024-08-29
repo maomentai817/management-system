@@ -30,3 +30,13 @@ export const getOutcomeAPI = () => {
     method: 'get'
   })
 }
+
+/**
+ * @description 获取 tags
+ */
+export const getAllTagsAPI = () => {
+  return instance({
+    url: '/consumes/category',
+    method: 'get'
+  })
+}

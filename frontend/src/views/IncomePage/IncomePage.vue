@@ -1,30 +1,8 @@
 <script setup>
 import CardContainer from '@/components/modules/CardContainer/CardContainer.vue'
-import { useMemberStore } from '@/stores'
+import { useIncomeData } from './composables/config'
 
-const memberStore = useMemberStore()
-// const consumeStore = useConsumeStore()
-
-const memOptions = memberStore.members.map((item) => {
-  return {
-    value: item.memId,
-    label: item.name
-  }
-})
-const tagOptions = [
-  {
-    value: '工资',
-    label: '工资'
-  },
-  {
-    value: '奖金',
-    label: '奖金'
-  },
-  {
-    value: '其他',
-    label: '其他'
-  }
-]
+const { memOptions, tagOptions } = useIncomeData()
 </script>
 
 <template>

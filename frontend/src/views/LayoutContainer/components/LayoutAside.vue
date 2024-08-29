@@ -11,8 +11,17 @@ import { useRouter } from 'vue-router'
 
 const globalStore = useGlobalStore()
 const router = useRouter()
+const pathTitlt = {
+  '/': '系统首页',
+  '/data-view': '系统首页',
+  '/mem-manage': '成员信息',
+  '/income': '收入管理',
+  '/outcome': '支出管理',
+  '/user-center': '用户中心'
+}
 const handleOpen = (index) => {
   if (index) {
+    globalStore.addPanels({ path: index, title: pathTitlt[index] })
     router.push(index)
   }
 }
