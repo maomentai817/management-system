@@ -28,7 +28,7 @@ const date = ref('')
 </script>
 
 <template>
-  <div class="filter-box f-b">
+  <div class="filter-box f-b mr-10">
     <div class="filter-content f-b w-80%">
       <div class="income-box f-b w-full" v-if="type">
         <div class="mem-sel w-30%">

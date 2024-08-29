@@ -1,0 +1,24 @@
+import { useMemberStore, useConsumeStore } from '@/stores'
+
+export const useOutcomeData = () => {
+  const memberStore = useMemberStore()
+  const consumeStore = useConsumeStore()
+
+  const memOptions = memberStore.members.map((item) => {
+    return {
+      value: item.memId,
+      label: item.name
+    }
+  })
+
+  const tagOptions = consumeStore.tags.map((item) => {
+    return {
+      value: item,
+      label: item
+    }
+  })
+  return {
+    memOptions,
+    tagOptions
+  }
+}

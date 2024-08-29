@@ -1,8 +1,16 @@
 <script setup>
 import CardContainer from '@/components/modules/CardContainer/CardContainer.vue'
 import { useIncomeData } from './composables/config'
+import { onMounted } from 'vue'
+import { useConsumeStore } from '@/stores'
 
 const { memOptions, tagOptions } = useIncomeData()
+
+const consumeStore = useConsumeStore()
+onMounted(() => {
+  // 获取收入
+  consumeStore.getIncomeData()
+})
 </script>
 
 <template>
@@ -18,7 +26,7 @@ const { memOptions, tagOptions } = useIncomeData()
       </div>
       <div class="table-container">
         <CardContainer>
-          <TableContainer></TableContainer>
+          <TableContainer :tableData="consumeStore.incomeList"></TableContainer>
         </CardContainer>
       </div>
     </CardContainer>

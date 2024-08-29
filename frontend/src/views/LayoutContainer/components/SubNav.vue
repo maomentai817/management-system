@@ -1,6 +1,6 @@
 <script setup>
 import { useGlobalStore } from '@/stores'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { FullScreen } from '@element-plus/icons-vue'
 import { useRouter, useRoute } from 'vue-router'
 
@@ -24,6 +24,9 @@ const tabRemoveHandle = (tab) => {
 const tabChangeHandle = () => {
   router.push(tabs.value)
 }
+watch(route, () => {
+  tabs.value = route.path
+})
 </script>
 
 <template>
