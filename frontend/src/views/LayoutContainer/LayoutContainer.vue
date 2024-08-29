@@ -13,7 +13,7 @@ const globalStore = useGlobalStore()
         <LayoutAside></LayoutAside>
       </el-aside>
       <el-container>
-        <el-header class="p-0">
+        <el-header class="pr-0!">
           <LayoutNav></LayoutNav>
         </el-header>
         <el-main>

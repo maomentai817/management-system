@@ -3,7 +3,8 @@ import {
   HomeFilled,
   UserFilled,
   Money,
-  WalletFilled
+  WalletFilled,
+  Help
 } from '@element-plus/icons-vue'
 import { useGlobalStore } from '@/stores'
 import { useRouter } from 'vue-router'
@@ -16,7 +17,9 @@ const handleOpen = (index) => {
   }
 }
 const handleClose = (index) => {
-  console.log(index)
+  if (index) {
+    router.push(index)
+  }
 }
 </script>
 
@@ -28,6 +31,7 @@ const handleClose = (index) => {
       :collapse="globalStore.isCollapse"
       @open="handleOpen"
       @close="handleClose"
+      @select="handleOpen"
     >
       <div class="aside-title text-center p-y-15 w-full f-c">
         <svg
@@ -68,6 +72,10 @@ const handleClose = (index) => {
       <el-menu-item index="/outcome">
         <el-icon><WalletFilled /></el-icon>
         <template #title>支出管理</template>
+      </el-menu-item>
+      <el-menu-item index="/user-center">
+        <el-icon><Help /></el-icon>
+        <template #title>用户中心</template>
       </el-menu-item>
     </el-menu>
   </div>

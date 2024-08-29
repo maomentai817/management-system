@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, nextTick } from 'vue'
 import { Sunny, Moon } from '@element-plus/icons-vue'
 import { useGlobalStore } from '@/stores'
 
@@ -50,6 +50,17 @@ onMounted(() => {
   isDark.value = JSON.parse(localStorage.getItem('isDark')) || false
   document.documentElement.classList.toggle('dark', isDark.value)
 })
+
+// 暴露函数
+const darkBtn = ref(null)
+defineExpose({
+  modelToggle,
+  triggerClick: () => {
+    nextTick(() => {
+      darkBtn.value.$el.click() // 手动触发点击事件
+    })
+  }
+})
 </script>
 
 <template>
@@ -58,6 +69,7 @@ onMounted(() => {
     :active-action-icon="Moon"
     :inactive-action-icon="Sunny"
     @click="modelToggle"
+    ref="darkBtn"
   />
 </template>
 
