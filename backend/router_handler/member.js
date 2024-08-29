@@ -12,3 +12,16 @@ exports.getMembers = (req,res) => {
         });
     });
 };
+
+exports.addMember = (req,res) => {
+    const sqlStr = 'insert into Member set ?';
+    const memberData = {
+        name: req.body.name,
+        sex: req.body.sex
+    };
+    db.query(sqlStr, memberData, (error, results) => {
+        if (error) 
+            return res.cc(error, 500);
+        return res.cc('新增用户成功');
+    })
+}

@@ -24,6 +24,100 @@ exports.getOutcome = (req,res) => {
     });
 };
 
+exports.getOutcomeByConditions = (req,res) => {
+    const { name, consumeDate, category } = req.body;
+    console.log(name,consumeDate,category);
+    let sqlStr = 
+        "SELECT consume.memId, amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume";
+    let conditions = [];
+    let values = [];
+
+    // 如果指定了name，通过name查询memId
+    if (name) {
+        sqlStr += ' INNER JOIN Member ON consume.memId = Member.memId';
+        conditions.push('Member.name = ?');
+        values.push(name);
+    }
+
+    // 如果指定了consumeDate，添加consumeDate的条件
+    if (consumeDate) {
+        conditions.push('DATE(consume.consumeDate) = ?');
+        values.push(consumeDate);
+    }
+
+    // 如果指定了category，添加category的条件
+    if (category) {
+        conditions.push('consume.category = ?');
+        values.push(category);
+    }
+
+    // 构建最终的查询语句
+    if (conditions.length > 0) {
+        sqlStr += ' WHERE ' + conditions.join(' AND ');
+    }
+
+    sqlStr += ' AND transactionType = 0';
+
+
+    db.query(sqlStr, values, (error, results) => {
+        if (error) 
+            return res.cc(error, 500);
+
+        return res.send({
+            status: 200,
+            msg: '查询成功',
+            data: results
+        });
+    });
+};
+
+exports.getIncomeByConditions = (req,res) => {
+    const { name, consumeDate, category } = req.body;
+    console.log(name,consumeDate,category);
+    let sqlStr = 
+        "SELECT consume.memId, amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume";
+    let conditions = [];
+    let values = [];
+
+    // 如果指定了name，通过name查询memId
+    if (name) {
+        sqlStr += ' INNER JOIN Member ON consume.memId = Member.memId';
+        conditions.push('Member.name = ?');
+        values.push(name);
+    }
+
+    // 如果指定了consumeDate，添加consumeDate的条件
+    if (consumeDate) {
+        conditions.push('DATE(consume.consumeDate) = ?');
+        values.push(consumeDate);
+    }
+
+    // 如果指定了category，添加category的条件
+    if (category) {
+        conditions.push('consume.category = ?');
+        values.push(category);
+    }
+
+    // 构建最终的查询语句
+    if (conditions.length > 0) {
+        sqlStr += ' WHERE ' + conditions.join(' AND ');
+    }
+
+    sqlStr += ' AND transactionType = 1';
+
+
+    db.query(sqlStr, values, (error, results) => {
+        if (error) 
+            return res.cc(error, 500);
+
+        return res.send({
+            status: 200,
+            msg: '查询成功',
+            data: results
+        });
+    });
+};
+
 exports.getIncome = (req,res) => {
     const sqlStr = 'select * from consume where (transactionType = 1 and isDeleted = 0)';
     db.query(sqlStr, (error, results) => {

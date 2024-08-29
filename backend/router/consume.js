@@ -23,5 +23,8 @@ router.get('/consumes/income', routerHandler.getIncome);
 
 router.get('/consumes/category', routerHandler.getCategory);
 
+router.get('/outcome/conditions',routerHandler.getOutcomeByConditions);
+
+router.get('/income/conditions',routerHandler.getIncomeByConditions);
 
 module.exports = router;
