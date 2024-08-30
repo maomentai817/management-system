@@ -44,16 +44,17 @@ watch(
   }
 )
 watch(
-  () => props.type,
-  (newVal) => {
-    // console.log(newVal)
-    if (newVal === 'add') {
+  [() => props.type, () => props.renderData],
+  ([newType, newRenderData]) => {
+    if (newType === 'add') {
       form.value = JSON.parse(JSON.stringify(defaultForm))
     } else {
-      console.log('1212', props.renderData)
+      form.value = newRenderData
+      selectedTag.value = newRenderData.category
     }
   }
 )
+
 const emits = defineEmits(['close'])
 const closeDrawer = () => {
   drawer.value = false

@@ -21,6 +21,7 @@ const drawerType = ref('add')
 const handleEdit = (row) => {
   drawer.value = true
   drawerType.value = 'edit'
+  // console.log(row)
   drawerData.value = {
     recipient: row.recipient,
     category: row.category,
@@ -29,7 +30,6 @@ const handleEdit = (row) => {
     consumeDate: row.consumeDate,
     userNote: row.userNote
   }
-  console.log('da', drawerData.value)
 }
 
 const filterData = ref(consumeStore.incomeList)
@@ -84,7 +84,7 @@ const handleClose = () => {
       :isShow="drawer"
       @close="handleClose"
       :type="drawerType"
-      :renderDate="drawerData"
+      :renderData="drawerData"
     ></DrawerContainer>
   </div>
 </template>
