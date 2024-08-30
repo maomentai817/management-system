@@ -1,7 +1,8 @@
 const db = require('../db/index.js');
 
 exports.getAllConsumes = (req,res) => {
-    const sqlStr = 'select * from consume where isDeleted = 0';
+    const sqlStr = 
+        "SELECT consume.memId, Member.name AS memberName,amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memId = Member.memId where isDeleted = 0";
     db.query(sqlStr, (error,results) => {
         if(error) return res.cc(error, 500);
         return res.send({
@@ -13,7 +14,8 @@ exports.getAllConsumes = (req,res) => {
 };
 
 exports.getOutcome = (req,res) => {
-    const sqlStr = 'select * from consume where (transactionType = 0 and isDeleted = 0)';
+    const sqlStr = 
+        "SELECT consume.memId, Member.name AS memberName, amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memID = Member.memId where (transactionType = 0 and isDeleted = 0)";
     db.query(sqlStr, (error, results) => {
         if(error) return res.cc(error, 500);
         return res.send({
@@ -25,16 +27,15 @@ exports.getOutcome = (req,res) => {
 };
 
 exports.getOutcomeByConditions = (req,res) => {
-    const { name, consumeDate, category } = req.body;
+    const { name, consumeDate, category } = req.query;
     console.log(name,consumeDate,category);
     let sqlStr = 
-        "SELECT consume.memId, amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume";
+        "SELECT consume.memId, Member.name AS memberName, amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memId = Member.memId";
     let conditions = [];
     let values = [];
 
     // 如果指定了name，通过name查询memId
     if (name) {
-        sqlStr += ' INNER JOIN Member ON consume.memId = Member.memId';
         conditions.push('Member.name = ?');
         values.push(name);
     }
@@ -54,11 +55,12 @@ exports.getOutcomeByConditions = (req,res) => {
     // 构建最终的查询语句
     if (conditions.length > 0) {
         sqlStr += ' WHERE ' + conditions.join(' AND ');
+        sqlStr += ' AND transactionType = 0 AND isDeleted = 0';
     }
 
-    sqlStr += ' AND transactionType = 0';
-
-
+    console.log(sqlStr);
+    console.log(values)
+    //res.send(sqlStr)
     db.query(sqlStr, values, (error, results) => {
         if (error) 
             return res.cc(error, 500);
@@ -72,16 +74,16 @@ exports.getOutcomeByConditions = (req,res) => {
 };
 
 exports.getIncomeByConditions = (req,res) => {
-    const { name, consumeDate, category } = req.body;
+    console.log(req.query);
+    const { name, consumeDate, category } = req.query;
     console.log(name,consumeDate,category);
     let sqlStr = 
-        "SELECT consume.memId, amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume";
+        "SELECT consume.memId, Member.name AS memberName, amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memId = Member.memId";
     let conditions = [];
     let values = [];
 
     // 如果指定了name，通过name查询memId
     if (name) {
-        sqlStr += ' INNER JOIN Member ON consume.memId = Member.memId';
         conditions.push('Member.name = ?');
         values.push(name);
     }
@@ -101,11 +103,12 @@ exports.getIncomeByConditions = (req,res) => {
     // 构建最终的查询语句
     if (conditions.length > 0) {
         sqlStr += ' WHERE ' + conditions.join(' AND ');
+        sqlStr += 'AND transactionType = 1 AND isDeleted = 0';
     }
 
-    sqlStr += ' AND transactionType = 1';
 
-
+    //console.log(sqlStr)
+    //console.log(values)
     db.query(sqlStr, values, (error, results) => {
         if (error) 
             return res.cc(error, 500);
@@ -119,7 +122,7 @@ exports.getIncomeByConditions = (req,res) => {
 };
 
 exports.getIncome = (req,res) => {
-    const sqlStr = 'select * from consume where (transactionType = 1 and isDeleted = 0)';
+    const sqlStr = "SELECT consume.memId, Member.name AS memberName, amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memId = Member.memId where (transactionType = 1 and isDeleted = 0)";
     db.query(sqlStr, (error, results) => {
         if(error) return res.cc(error, 500);
         return res.send({
@@ -131,7 +134,7 @@ exports.getIncome = (req,res) => {
 };
 
 exports.getConsumeByMemId = (req,res) => {
-    const sqlStr = 'select * from consume where (memId = ? and isDeleted = 0)';
+    const sqlStr = "SELECT consume.memId, Member.name AS memberName amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memId = Member.memId where (memId = ? and isDeleted = 0)";
     db.query(sqlStr, [req.params.id], (error, results) => {
         if(error) return res.cc(error, 500);
         return res.send({
@@ -143,7 +146,7 @@ exports.getConsumeByMemId = (req,res) => {
 };
 
 exports.getCategory = (req,res) => {
-    const sqlStr = 'select distinct category from consume';
+    const sqlStr = 'select distinct category from consume where isDeleted = 0';
     db.query(sqlStr, (error, results) => {
         if (error) 
             return res.cc(error, 500);
