@@ -30,7 +30,7 @@ const date = ref('')
 <template>
   <div class="filter-box f-b mr-10">
     <div class="filter-content f-b w-80%">
-      <div class="income-box f-b w-full" v-if="type">
+      <div class="income-box f-b w-full">
         <div class="mem-sel w-30%">
           <el-select v-model="memVal" placeholder="请选择用户名">
             <el-option
@@ -55,7 +55,7 @@ const date = ref('')
           </el-select>
         </div>
       </div>
-      <div class="outcome-box" v-else>
+      <!-- <div class="outcome-box" v-else>
         <div class="mem-sel w-30%">
           <el-select v-model="memVal" placeholder="请选择用户名">
             <el-option
@@ -79,7 +79,7 @@ const date = ref('')
             />
           </el-select>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="filter-btn">
       <div class="btn-group">

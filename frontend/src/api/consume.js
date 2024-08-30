@@ -40,3 +40,13 @@ export const getAllTagsAPI = () => {
     method: 'get'
   })
 }
+
+/**
+ * @description 删除记录
+ */
+export const deleteConsumeAPI = (id) => {
+  return instance({
+    url: `/consumes/${id}`,
+    method: 'delete'
+  })
+}

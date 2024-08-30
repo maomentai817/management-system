@@ -1,16 +1,20 @@
 <script setup>
 import CardContainer from '@/components/modules/CardContainer/CardContainer.vue'
 import { useIncomeData } from './composables/config'
-import { onMounted } from 'vue'
 import { useConsumeStore } from '@/stores'
+import { onMounted } from 'vue'
 
 const { memOptions, tagOptions } = useIncomeData()
 
 const consumeStore = useConsumeStore()
+
+// const incomeList = ref(consumeStore.incomeList)
 onMounted(() => {
-  // 获取收入
-  consumeStore.getIncomeData()
+  if (consumeStore.incomeList.length === 0) consumeStore.getIncomeData()
 })
+const handleDel = (row) => {
+  consumeStore.deleteConsume(row.id)
+}
 </script>
 
 <template>
@@ -18,7 +22,7 @@ onMounted(() => {
     <CardContainer class="h-full fd-col">
       <div class="filter-container mb-10">
         <FilterBox
-          type="true"
+          :type="true"
           :memOptions="memOptions"
           :tagOptions="tagOptions"
         >
@@ -26,7 +30,10 @@ onMounted(() => {
       </div>
       <div class="table-container">
         <CardContainer>
-          <TableContainer :tableData="consumeStore.incomeList"></TableContainer>
+          <TableContainer
+            :tableData="consumeStore.incomeList"
+            @del="handleDel"
+          ></TableContainer>
         </CardContainer>
       </div>
     </CardContainer>

@@ -4,20 +4,22 @@ import {
   getIncomeAPI,
   getOutcomeAPI,
   getConsumeAPI,
-  getAllTagsAPI
+  getAllTagsAPI,
+  deleteConsumeAPI
 } from '@/api/consume'
+import { ElMessage } from 'element-plus'
 
 export const useConsumeStore = defineStore('consume', () => {
   // state
   const consumeList = ref([])
   const incomeList = ref([])
   const outcomeList = ref([])
-
   // 获取消费记录
   const getConsumeData = async () => {
     const res = await getConsumeAPI()
     consumeList.value = res.data
   }
+  getConsumeData()
   // 获取收入
   const getIncomeData = async () => {
     const res = await getIncomeAPI()
@@ -36,6 +38,21 @@ export const useConsumeStore = defineStore('consume', () => {
     const res = await getAllTagsAPI()
     tags.value = res.data
   }
+
+  const refresh = () => {
+    getConsumeData()
+    getIncomeData()
+    getOutcomeData()
+    getTags()
+  }
+  // 删除操作
+  const deleteConsume = async (id) => {
+    const res = await deleteConsumeAPI(id)
+    if (res.status === 200) {
+      ElMessage.success('删除成功')
+      refresh()
+    }
+  }
   return {
     consumeList,
     incomeList,
@@ -44,6 +61,8 @@ export const useConsumeStore = defineStore('consume', () => {
     getTags,
     getIncomeData,
     getOutcomeData,
-    getConsumeData
+    getConsumeData,
+    deleteConsume,
+    refresh
   }
 })
