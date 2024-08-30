@@ -1,11 +1,17 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-// import { useUserStore } from '@/stores'
+import { useUserStore } from '@/stores'
 import Vcode from 'vue3-puzzle-vcode'
-import imgs from '../composables/getRandomImgs'
+// import imgs from '../composables/getRandomImgs'
+import { getRandomPic } from '@/api/global'
 
-// const userStore = useUserStore()
+let imgs = []
+onMounted(async () => {
+  const res = await getRandomPic()
+  imgs = res.data
+})
+const userStore = useUserStore()
 const form = ref({
   account: '',
   password: ''
@@ -47,17 +53,17 @@ const onSuccessLogin = () => {
 
 const proceedToLogin = async () => {
   if (isVerified.value) {
-    // const { account, password } = form.value
+    const { account, password } = form.value
     // 登录操作
-    // const res = await userStore.getUserInfo({ account, password })
-    // if (res.status === 200) {
-    //   ElMessage.success('登录成功')
-    //   router.replace('/')
-    // } else {
-    //   ElMessage.error(res.message)
-    // }
-    ElMessage.success('登录成功')
-    router.replace('/')
+    const res = await userStore.getUserInfo({ username: account, password })
+    if (res.status === 200) {
+      ElMessage.success('登录成功')
+      router.replace('/')
+    } else {
+      ElMessage.error(res.msg)
+    }
+    // ElMessage.success('登录成功')
+    // router.replace('/')
   } else {
     ElMessage.error('请先完成验证')
   }

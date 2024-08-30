@@ -8,11 +8,11 @@ export const useUserStore = defineStore(
     // state
     const userInfo = ref({})
     // actions
-    const getUserInfo = async ({ account, password }) => {
-      const res = await loginAPI({ account, password })
+    const getUserInfo = async ({ username, password }) => {
+      const res = await loginAPI({ username, password })
       console.log(res)
       if (res.status === 200) {
-        userInfo.value = res
+        userInfo.value = res.data
       }
       return res
     }

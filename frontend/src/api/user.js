@@ -5,10 +5,10 @@ import instance from '@/utils/instance.js'
  * @param {Object} params
  * @returns {Object}
  */
-export const loginAPI = ({ account, password }) => {
+export const loginAPI = ({ username, password }) => {
   return instance({
-    url: '/user/login',
+    url: '/login',
     method: 'post',
-    params: { username: account, password: password }
+    data: { username: username, password: password }
   })
 }

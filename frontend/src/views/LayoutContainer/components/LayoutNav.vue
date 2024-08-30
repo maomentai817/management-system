@@ -116,9 +116,11 @@ const logout = () => {
           :class="globalStore.isDark ? 'dark' : ''"
         >
           <div class="avatar-container mr-6 f-c">
-            <el-avatar :src="avatarImg" />
+            <el-avatar :src="userStore.userInfo.avatar || avatarImg" />
           </div>
-          <div class="username-container">猫闷台817</div>
+          <div class="username-container">
+            {{ userStore.userInfo.username }}
+          </div>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
