@@ -27,7 +27,7 @@ const tagVal = ref('')
 // 日期
 const date = ref('')
 
-const emits = defineEmits(['filter', 'reset'])
+const emits = defineEmits(['filter', 'reset', 'add'])
 const filterHandle = () => {
   if (memVal.value || date.value || tagVal.value) {
     emits('filter', {
@@ -56,6 +56,10 @@ const resetHandle = () => {
       duration: 2000
     })
   }
+}
+
+const addHandle = () => {
+  emits('add')
 }
 </script>
 
@@ -117,7 +121,7 @@ const resetHandle = () => {
       <div class="btn-group">
         <el-button type="primary" plain @click="filterHandle">查询</el-button>
         <el-button type="primary" plain @click="resetHandle">重置</el-button>
-        <el-button type="primary" plain>新增</el-button>
+        <el-button type="primary" plain @click="addHandle">新增</el-button>
       </div>
     </div>
   </div>

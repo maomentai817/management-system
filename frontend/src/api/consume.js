@@ -72,3 +72,14 @@ export const getFilterOutcomeAPI = (info) => {
     params: info
   })
 }
+
+/**
+ * @description 新增条目
+ */
+export const addConsumeAPI = (info) => {
+  return instance({
+    url: '/consumes',
+    method: 'post',
+    data: info
+  })
+}

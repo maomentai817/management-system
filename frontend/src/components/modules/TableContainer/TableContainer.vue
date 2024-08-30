@@ -31,6 +31,10 @@ const delHandle = (row) => {
     emits('del', row)
   })
 }
+const editHandle = (row) => {
+  // console.log('编辑', row.id)
+  emits('edit', row)
+}
 </script>
 
 <template>
@@ -50,7 +54,12 @@ const delHandle = (row) => {
         <el-table-column align="center" prop="userNote" label="更多描述" />
         <el-table-column align="center" label="操作">
           <template #default="scope">
-            <el-button type="primary" plain>编辑</el-button>
+            <el-button
+              type="primary"
+              plain
+              @click.prevent="editHandle(scope.row)"
+              >编辑</el-button
+            >
             <el-button type="danger" plain @click.prevent="delHandle(scope.row)"
               >删除</el-button
             >

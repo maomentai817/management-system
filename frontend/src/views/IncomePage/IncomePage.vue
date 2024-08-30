@@ -13,7 +13,23 @@ onMounted(() => {
   if (consumeStore.incomeList.length === 0) consumeStore.getIncomeData()
 })
 const handleDel = (row) => {
+  // console.log(row)
   consumeStore.deleteConsume(row.id)
+}
+const drawerData = ref({})
+const drawerType = ref('add')
+const handleEdit = (row) => {
+  drawer.value = true
+  drawerType.value = 'edit'
+  drawerData.value = {
+    recipient: row.recipient,
+    category: row.category,
+    memberName: row.memberName,
+    amount: row.amount,
+    consumeDate: row.consumeDate,
+    userNote: row.userNote
+  }
+  console.log('da', drawerData.value)
 }
 
 const filterData = ref(consumeStore.incomeList)
@@ -29,6 +45,15 @@ const handleReset = () => {
     duration: 2000
   })
 }
+const drawer = ref(false)
+const handleAdd = () => {
+  drawerType.value = 'add'
+  drawerData.value = {}
+  drawer.value = true
+}
+const handleClose = () => {
+  drawer.value = false
+}
 </script>
 
 <template>
@@ -41,6 +66,7 @@ const handleReset = () => {
           :tagOptions="tagOptions"
           @filter="handleFilter"
           @reset="handleReset"
+          @add="handleAdd"
         >
         </FilterBox>
       </div>
@@ -49,10 +75,17 @@ const handleReset = () => {
           <TableContainer
             :tableData="filterData"
             @del="handleDel"
+            @edit="handleEdit"
           ></TableContainer>
         </CardContainer>
       </div>
     </CardContainer>
+    <DrawerContainer
+      :isShow="drawer"
+      @close="handleClose"
+      :type="drawerType"
+      :renderDate="drawerData"
+    ></DrawerContainer>
   </div>
 </template>
 
