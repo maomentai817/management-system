@@ -6,7 +6,7 @@ export const useIncomeData = () => {
 
   const memOptions = memberStore.members.map((item) => {
     return {
-      value: item.memId,
+      value: item.name,
       label: item.name
     }
   })

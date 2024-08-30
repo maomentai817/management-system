@@ -50,3 +50,25 @@ export const deleteConsumeAPI = (id) => {
     method: 'delete'
   })
 }
+
+/**
+ * @description 收入筛选
+ */
+export const getFilterIncomeAPI = (info) => {
+  return instance({
+    url: '/income/conditions',
+    method: 'get',
+    params: info
+  })
+}
+
+/**
+ * @description 支出筛选
+ */
+export const getFilterOutcomeAPI = (info) => {
+  return instance({
+    url: '/outcome/conditions',
+    method: 'get',
+    params: info
+  })
+}

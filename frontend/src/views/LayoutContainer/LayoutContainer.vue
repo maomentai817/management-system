@@ -11,6 +11,7 @@ const consumeStore = useConsumeStore()
 onMounted(() => {
   memberStore.initMembers()
   consumeStore.getTags()
+  consumeStore.getConsumeData()
 })
 
 const flag = ref(false)

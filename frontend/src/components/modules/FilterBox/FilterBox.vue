@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { formatDate } from '@/utils/formatTime'
 const props = defineProps({
   type: {
     type: Boolean,
@@ -25,6 +26,37 @@ tags.value = props.tagOptions
 const tagVal = ref('')
 // 日期
 const date = ref('')
+
+const emits = defineEmits(['filter', 'reset'])
+const filterHandle = () => {
+  if (memVal.value || date.value || tagVal.value) {
+    emits('filter', {
+      name: memVal.value,
+      consumeDate: formatDate(date.value),
+      category: tagVal.value
+    })
+  } else {
+    ElNotification({
+      message: '请至少选择一个筛选条件',
+      type: 'error',
+      duration: 2000
+    })
+  }
+}
+const resetHandle = () => {
+  if (memVal.value || date.value || tagVal.value) {
+    memVal.value = ''
+    date.value = ''
+    tagVal.value = ''
+    emits('reset')
+  } else {
+    ElNotification({
+      message: '没有需要重置的筛选条件',
+      type: 'warning',
+      duration: 2000
+    })
+  }
+}
 </script>
 
 <template>
@@ -83,8 +115,8 @@ const date = ref('')
     </div>
     <div class="filter-btn">
       <div class="btn-group">
-        <el-button type="primary" plain>查询</el-button>
-        <el-button type="primary" plain>重置</el-button>
+        <el-button type="primary" plain @click="filterHandle">查询</el-button>
+        <el-button type="primary" plain @click="resetHandle">重置</el-button>
         <el-button type="primary" plain>新增</el-button>
       </div>
     </div>

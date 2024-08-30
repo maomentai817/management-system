@@ -43,7 +43,7 @@ const delHandle = (row) => {
         table-layout="auto"
       >
         <el-table-column align="center" prop="consumeDate" label="日期" />
-        <el-table-column align="center" prop="memId" label="成员" />
+        <el-table-column align="center" prop="memberName" label="成员" />
         <el-table-column align="center" prop="category" label="分类" />
         <el-table-column align="center" prop="amount" label="金额" />
         <el-table-column align="center" prop="recipient" label="来源/去向" />
