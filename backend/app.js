@@ -24,6 +24,6 @@ app.use('/api', sqltest);
 app.use('/',consumes);
 app.use('/',members);
 
-app.listen(8088,'192.168.43.59', () => {
+app.listen(8088, () => {
   console.log('server running at http://localhost:8088');
 })

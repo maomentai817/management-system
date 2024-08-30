@@ -26,7 +26,7 @@ exports.getOutcome = (req,res) => {
 
 exports.getOutcomeByConditions = (req,res) => {
     const { name, consumeDate, category } = req.body;
-    console.log(name,consumeDate,category);
+    // console.log(name,consumeDate,category);
     let sqlStr = 
         "SELECT consume.memId, amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume";
     let conditions = [];
