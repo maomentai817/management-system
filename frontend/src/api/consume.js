@@ -83,3 +83,14 @@ export const addConsumeAPI = (info) => {
     data: info
   })
 }
+
+/**
+ * @description 修改条目
+ */
+export const updateConsumeAPI = (info) => {
+  return instance({
+    url: `/consumes/${info.id}`,
+    method: 'put',
+    data: info
+  })
+}

@@ -15,6 +15,24 @@ onMounted(() => {
 const handleDel = (row) => {
   consumeStore.deleteConsume(row.id)
 }
+
+// 抽屉
+const drawerData = ref({})
+const drawerType = ref('add')
+const handleEdit = (row) => {
+  drawer.value = true
+  drawerType.value = 'edit'
+  // console.log(row)
+  drawerData.value = {
+    recipient: row.recipient,
+    category: row.category,
+    memberName: row.memberName,
+    amount: row.amount,
+    consumeDate: row.consumeDate,
+    userNote: row.userNote
+  }
+}
+
 const filterData = ref(consumeStore.outcomeList)
 const handleFilter = async (info) => {
   const res = await getFilterOutcomeAPI(info)
@@ -28,6 +46,16 @@ const handleReset = () => {
     duration: 2000
   })
 }
+
+const drawer = ref(false)
+const handleAdd = () => {
+  drawerType.value = 'add'
+  drawerData.value = {}
+  drawer.value = true
+}
+const handleClose = () => {
+  drawer.value = false
+}
 </script>
 
 <template>
@@ -40,6 +68,7 @@ const handleReset = () => {
           :tagOptions="tagOptions"
           @filter="handleFilter"
           @reset="handleReset"
+          @add="handleAdd"
         >
         </FilterBox>
       </div>
@@ -48,10 +77,17 @@ const handleReset = () => {
           <TableContainer
             :tableData="filterData"
             @del="handleDel"
+            @edit="handleEdit"
           ></TableContainer>
         </CardContainer>
       </div>
     </CardContainer>
+    <DrawerContainer
+      :isShow="drawer"
+      @close="handleClose"
+      :type="drawerType"
+      :renderData="drawerData"
+    ></DrawerContainer>
   </div>
 </template>
 

@@ -103,7 +103,11 @@ const submitForm = () => {
     })
     return
   }
-  consumeStore.addConsume(form.value)
+  if (props.type === 'add') {
+    consumeStore.addConsume(form.value)
+  } else {
+    consumeStore.editConsume(form.value)
+  }
   resetForm()
   drawer.value = false
 }

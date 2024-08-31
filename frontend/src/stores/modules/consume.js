@@ -6,7 +6,8 @@ import {
   getConsumeAPI,
   getAllTagsAPI,
   deleteConsumeAPI,
-  addConsumeAPI
+  addConsumeAPI,
+  updateConsumeAPI
 } from '@/api/consume'
 import { ElMessage } from 'element-plus'
 
@@ -62,6 +63,14 @@ export const useConsumeStore = defineStore('consume', () => {
       refresh()
     }
   }
+  // 编辑操作
+  const editConsume = async (info) => {
+    const res = await updateConsumeAPI(info)
+    if (res.status === 200) {
+      ElMessage.success('编辑成功')
+      refresh()
+    }
+  }
   return {
     consumeList,
     incomeList,
@@ -73,6 +82,7 @@ export const useConsumeStore = defineStore('consume', () => {
     getConsumeData,
     deleteConsume,
     refresh,
-    addConsume
+    addConsume,
+    editConsume
   }
 })
