@@ -20,6 +20,9 @@ onMounted(() => {
         >
           <PersonInfo :person-info="person" />
         </div>
+        <div class="per-box w-22% m-r-3% m-b-1.5% relative">
+          <PersonInfo />
+        </div>
       </div>
     </CardContainer>
   </div>

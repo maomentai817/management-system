@@ -1,15 +1,42 @@
 <script setup>
+import { Plus } from '@element-plus/icons-vue'
+import { useMemberStore } from '@/stores'
+import { ref } from 'vue'
+
 defineProps({
   personInfo: {
     type: Object,
     default: () => {}
   }
 })
+
+const memberStore = useMemberStore()
+const dialogVisible = ref(false)
+const form = ref({
+  name: '',
+  sex: '男'
+})
+const rules = {
+  name: [
+    { required: true, message: '请输入姓名', trigger: 'blur' },
+    { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
+  ]
+}
+const formRef = ref(null)
+const dialogConfirm = () => {
+  formRef.value.validate(async (valid) => {
+    if (valid) {
+      // console.log(form.value)
+      memberStore.addMember(form.value)
+      dialogVisible.value = false
+    }
+  })
+}
 </script>
 
 <template>
   <CardContainer class="wh-full overflow-hidden cursor-pointer" id="per-card">
-    <div class="per-content fd-col f-c">
+    <div class="per-content fd-col f-c" v-if="personInfo">
       <div class="per-avatar bg-red w-90% relative overflow-hidden">
         <UglyAvatar></UglyAvatar>
       </div>
@@ -17,7 +44,29 @@ defineProps({
         {{ personInfo.name }}
       </div>
     </div>
+    <div class="per-content f-c h-full" v-else @click="dialogVisible = true">
+      <el-icon class="fs-28 color-#8c939d text-center wh-100%">
+        <Plus></Plus>
+      </el-icon>
+    </div>
   </CardContainer>
+  <el-dialog v-model="dialogVisible" title="添加成员" width="30%">
+    <el-form :model="form" label-width="80px" :rules="rules" ref="formRef">
+      <el-form-item label="姓名" prop="name">
+        <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
+      </el-form-item>
+      <el-form-item label="性别">
+        <el-radio-group v-model="form.sex">
+          <el-radio value="男">男</el-radio>
+          <el-radio value="女">女</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item>
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="dialogConfirm">提交</el-button>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>

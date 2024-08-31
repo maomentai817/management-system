@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { getMemberAPI } from '@/api/member'
+import { getMemberAPI, addMemberAPI } from '@/api/member'
 
 export const useMemberStore = defineStore('member', () => {
   // state
@@ -11,8 +11,17 @@ export const useMemberStore = defineStore('member', () => {
     members.value = res.data
   }
 
+  const addMember = async (info) => {
+    const res = await addMemberAPI(info)
+    if (res.status === 200) {
+      await initMembers()
+      ElMessage.success('新增用户成功')
+    }
+  }
+
   return {
     members,
-    initMembers
+    initMembers,
+    addMember
   }
 })

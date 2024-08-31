@@ -9,3 +9,14 @@ export const getMemberAPI = () => {
     method: 'get'
   })
 }
+
+/**
+ * @description 添加成员接口
+ */
+export const addMemberAPI = (info) => {
+  return instance({
+    url: '/members',
+    method: 'post',
+    data: info
+  })
+}
