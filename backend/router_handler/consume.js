@@ -151,7 +151,9 @@ exports.getCategory = (req,res) => {
         if (error) 
             return res.cc(error, 500);
 
-        const categories = results.map(row => row.category);
+        const categories = results.map(row => { 
+            if(row.category) return row.category;
+        });
         return res.send({
             status:200,
             msg:'获取所有分类成功',

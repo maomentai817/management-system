@@ -97,6 +97,10 @@ export default defineConfig({
     [
       /^wh-(\d+)$/,
       (match) => ({ width: `${match[1]}px`, height: `${match[1]}px` })
+    ],
+    [
+      /^wh-(\d+)%$/,
+      (match) => ({ width: `${match[1]}%`, height: `${match[1]}%` })
     ]
   ]
 })

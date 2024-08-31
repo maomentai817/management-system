@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginPage from '@/views/LoginPage/LoginPage.vue'
-// import { useUserStore } from '@/stores'
+import MemManage from '@/views/MemManage/MemManage.vue'
+import { useUserStore } from '@/stores'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,7 +25,7 @@ const router = createRouter({
         {
           path: '/mem-manage',
           name: 'MemManage',
-          component: () => import('@/views/MemManage/MemManage.vue')
+          component: MemManage
         },
         {
           path: '/income',
@@ -55,11 +56,11 @@ const router = createRouter({
   }
 })
 // 前置导航守卫
-// router.beforeEach((to) => {
-//   const userStore = useUserStore()
-//   if (!userStore.userInfo.token && to.path !== '/login') {
-//     return '/login'
-//   }
-//   return true
-// })
+router.beforeEach((to) => {
+  const userStore = useUserStore()
+  if (!userStore.userInfo.token && to.path !== '/login') {
+    return '/login'
+  }
+  return true
+})
 export default router
