@@ -2,7 +2,7 @@
 import CardContainer from '@/components/modules/CardContainer/CardContainer.vue'
 import { useOutcomeData } from './composables/config'
 import { useConsumeStore } from '@/stores'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { getFilterOutcomeAPI } from '@/api/consume'
 
 const { memOptions, tagOptions } = useOutcomeData()
@@ -15,6 +15,12 @@ const filterFlag = ref(false)
 onMounted(() => {
   if (consumeStore.outcomeList.length === 0) consumeStore.getOutcomeData()
 })
+watch(
+  () => consumeStore.outcomeList,
+  (newVal) => {
+    filterData.value = newVal
+  }
+)
 const handleDel = (row) => {
   consumeStore.deleteConsume(row.id)
 }

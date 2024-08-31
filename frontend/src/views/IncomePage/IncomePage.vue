@@ -2,7 +2,7 @@
 import CardContainer from '@/components/modules/CardContainer/CardContainer.vue'
 import { useIncomeData } from './composables/config'
 import { useConsumeStore } from '@/stores'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { getFilterIncomeAPI } from '@/api/consume'
 
 const { memOptions, tagOptions } = useIncomeData()
@@ -15,6 +15,12 @@ const filterFlag = ref(false)
 onMounted(() => {
   if (consumeStore.incomeList.length === 0) consumeStore.getIncomeData()
 })
+watch(
+  () => consumeStore.incomeList,
+  (newVal) => {
+    filterData.value = newVal
+  }
+)
 const handleDel = (row) => {
   // console.log(row)
   consumeStore.deleteConsume(row.id)

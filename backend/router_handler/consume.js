@@ -2,7 +2,7 @@ const db = require('../db/index.js');
 
 exports.getAllConsumes = (req,res) => {
     const sqlStr = 
-        "SELECT consume.memId, Member.name AS memberName,amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memId = Member.memId where isDeleted = 0";
+        "SELECT consume.memId, Member.name AS memberName,amount, id, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memId = Member.memId where isDeleted = 0";
     db.query(sqlStr, (error,results) => {
         if(error) return res.cc(error, 500);
         return res.send({
@@ -15,7 +15,7 @@ exports.getAllConsumes = (req,res) => {
 
 exports.getOutcome = (req,res) => {
     const sqlStr = 
-        "SELECT consume.memId, Member.name AS memberName, amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memID = Member.memId where (transactionType = 0 and isDeleted = 0)";
+        "SELECT consume.memId, Member.name AS memberName, amount, id, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memID = Member.memId where (transactionType = 0 and isDeleted = 0)";
     db.query(sqlStr, (error, results) => {
         if(error) return res.cc(error, 500);
         return res.send({
@@ -30,7 +30,7 @@ exports.getOutcomeByConditions = (req,res) => {
     const { name, consumeDate, category } = req.query;
     console.log(name,consumeDate,category);
     let sqlStr = 
-        "SELECT consume.memId, Member.name AS memberName, amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memId = Member.memId";
+        "SELECT consume.memId, Member.name AS memberName, amount, id, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memId = Member.memId";
     let conditions = [];
     let values = [];
 
@@ -78,7 +78,7 @@ exports.getIncomeByConditions = (req,res) => {
     const { name, consumeDate, category } = req.query;
     console.log(name,consumeDate,category);
     let sqlStr = 
-        "SELECT consume.memId, Member.name AS memberName, amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memId = Member.memId";
+        "SELECT consume.memId, Member.name AS memberName, amount, id, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memId = Member.memId";
     let conditions = [];
     let values = [];
 
@@ -122,7 +122,7 @@ exports.getIncomeByConditions = (req,res) => {
 };
 
 exports.getIncome = (req,res) => {
-    const sqlStr = "SELECT consume.memId, Member.name AS memberName, amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memId = Member.memId where (transactionType = 1 and isDeleted = 0)";
+    const sqlStr = "SELECT consume.memId, Member.name AS memberName, id, amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memId = Member.memId where (transactionType = 1 and isDeleted = 0)";
     db.query(sqlStr, (error, results) => {
         if(error) return res.cc(error, 500);
         return res.send({
@@ -134,7 +134,7 @@ exports.getIncome = (req,res) => {
 };
 
 exports.getConsumeByMemId = (req,res) => {
-    const sqlStr = "SELECT consume.memId, Member.name AS memberName amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memId = Member.memId where (memId = ? and isDeleted = 0)";
+    const sqlStr = "SELECT consume.memId, Member.name AS memberName amount, id, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, isDeleted, userNote FROM consume INNER JOIN Member ON consume.memId = Member.memId where (memId = ? and isDeleted = 0)";
     db.query(sqlStr, [req.params.id], (error, results) => {
         if(error) return res.cc(error, 500);
         return res.send({
@@ -152,12 +152,12 @@ exports.getCategory = (req,res) => {
             return res.cc(error, 500);
 
         const categories = results.map(row => { 
-            if(row.category) return row.category;
+            return row.category;
         });
         return res.send({
-            status:200,
-            msg:'获取所有分类成功',
-            data:categories
+            status: 200,
+            msg: '获取所有分类成功',
+            data: categories.filter(item => item !== '')
         });
     });
 };
