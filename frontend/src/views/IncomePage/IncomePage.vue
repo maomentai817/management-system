@@ -9,6 +9,9 @@ const { memOptions, tagOptions } = useIncomeData()
 
 const consumeStore = useConsumeStore()
 
+const filterData = ref(consumeStore.incomeList)
+const filterFlag = ref(false)
+
 onMounted(() => {
   if (consumeStore.incomeList.length === 0) consumeStore.getIncomeData()
 })
@@ -32,13 +35,14 @@ const handleEdit = (row) => {
   }
 }
 
-const filterData = ref(consumeStore.incomeList)
 const handleFilter = async (info) => {
   const res = await getFilterIncomeAPI(info)
   filterData.value = res.data
+  filterFlag.value = true
 }
 const handleReset = () => {
   filterData.value = consumeStore.incomeList
+  filterFlag.value = false
   ElNotification({
     message: '重置成功',
     type: 'success',
@@ -73,7 +77,11 @@ const handleClose = () => {
       <div class="table-container">
         <CardContainer>
           <TableContainer
-            :tableData="filterData"
+            :tableData="
+              filterData.length === 0 && !filterFlag
+                ? consumeStore.incomeList
+                : filterData
+            "
             @del="handleDel"
             @edit="handleEdit"
           ></TableContainer>

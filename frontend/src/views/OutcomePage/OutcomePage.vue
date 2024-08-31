@@ -9,6 +9,9 @@ const { memOptions, tagOptions } = useOutcomeData()
 
 const consumeStore = useConsumeStore()
 
+const filterData = ref(consumeStore.outcomeList)
+const filterFlag = ref(false)
+
 onMounted(() => {
   if (consumeStore.outcomeList.length === 0) consumeStore.getOutcomeData()
 })
@@ -33,13 +36,14 @@ const handleEdit = (row) => {
   }
 }
 
-const filterData = ref(consumeStore.outcomeList)
 const handleFilter = async (info) => {
   const res = await getFilterOutcomeAPI(info)
   filterData.value = res.data
+  filterFlag.value = true
 }
 const handleReset = () => {
   filterData.value = consumeStore.outcomeList
+  filterFlag.value = false
   ElNotification({
     message: '重置成功',
     type: 'success',
@@ -75,7 +79,11 @@ const handleClose = () => {
       <div class="table-container">
         <CardContainer>
           <TableContainer
-            :tableData="filterData"
+            :tableData="
+              filterData.length === 0 && !filterFlag
+                ? consumeStore.outcomeList
+                : filterData
+            "
             @del="handleDel"
             @edit="handleEdit"
           ></TableContainer>

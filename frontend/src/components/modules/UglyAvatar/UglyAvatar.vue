@@ -620,7 +620,9 @@ export default {
           this.faceWidth
         )
       }
-      this.svgToCanvas()
+      this.$nextTick(() => {
+        this.svgToCanvas()
+      })
     },
     downloadSVGAsPNG() {
       // download our svg as png
@@ -669,9 +671,6 @@ export default {
   },
   mounted() {
     this.generateFace()
-    this.$nextTick(() => {
-      this.svgToCanvas()
-    })
   }
 }
 </script>
