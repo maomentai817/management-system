@@ -10,7 +10,8 @@ const consumeStore = useConsumeStore()
 const memOptions = memberStore.members.map((item) => {
   return {
     value: item.name,
-    label: item.name
+    label: item.name,
+    id: item.memId
   }
 })
 const tagOptions = ref(
@@ -33,6 +34,10 @@ const props = defineProps({
   renderData: {
     type: Object,
     default: () => {}
+  },
+  id: {
+    type: Number,
+    default: 0
   }
 })
 
@@ -103,10 +108,15 @@ const submitForm = () => {
     })
     return
   }
+  const { memberName, ...rest } = form.value
+  const subForm = {
+    ...rest,
+    memId: memOptions.find((mem) => mem.label === memberName)?.id || null
+  }
   if (props.type === 'add') {
-    consumeStore.addConsume(form.value)
+    consumeStore.addConsume(subForm)
   } else {
-    consumeStore.editConsume(form.value)
+    consumeStore.editConsume(subForm, props.id)
   }
   resetForm()
   drawer.value = false

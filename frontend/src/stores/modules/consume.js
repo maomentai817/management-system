@@ -64,8 +64,8 @@ export const useConsumeStore = defineStore('consume', () => {
     }
   }
   // 编辑操作
-  const editConsume = async (info) => {
-    const res = await updateConsumeAPI(info)
+  const editConsume = async (info, id) => {
+    const res = await updateConsumeAPI(info, id)
     if (res.status === 200) {
       ElMessage.success('编辑成功')
       refresh()

@@ -19,6 +19,8 @@ watch(
   () => consumeStore.outcomeList,
   (newVal) => {
     filterData.value = newVal
+    filterFlag.value = false
+    handleReset()
   }
 )
 const handleDel = (row) => {
@@ -28,9 +30,11 @@ const handleDel = (row) => {
 // 抽屉
 const drawerData = ref({})
 const drawerType = ref('add')
+const drawerId = ref(0)
 const handleEdit = (row) => {
   drawer.value = true
   drawerType.value = 'edit'
+  drawerId.value = row.id
   // console.log(row)
   drawerData.value = {
     recipient: row.recipient,
@@ -101,6 +105,7 @@ const handleClose = () => {
       @close="handleClose"
       :type="drawerType"
       :renderData="drawerData"
+      :id="drawerId"
     ></DrawerContainer>
   </div>
 </template>
