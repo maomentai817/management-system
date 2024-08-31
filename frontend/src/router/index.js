@@ -18,11 +18,6 @@ const router = createRouter({
           component: () => import('@/views/DataView/DataView.vue')
         },
         {
-          path: '/data-view/:id',
-          name: 'DataViewDetail',
-          component: () => import('@/views/DataView/DataView.vue')
-        },
-        {
           path: '/mem-manage',
           name: 'MemManage',
           component: MemManage

@@ -2,8 +2,9 @@
 import { Plus } from '@element-plus/icons-vue'
 import { useMemberStore } from '@/stores'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-defineProps({
+const props = defineProps({
   personInfo: {
     type: Object,
     default: () => {}
@@ -32,10 +33,18 @@ const dialogConfirm = () => {
     }
   })
 }
+const router = useRouter()
+const navigateToDataV = () => {
+  router.push(`/data-view?id=${props.personInfo.memId}`)
+}
 </script>
 
 <template>
-  <CardContainer class="wh-full overflow-hidden cursor-pointer" id="per-card">
+  <CardContainer
+    class="wh-full overflow-hidden cursor-pointer"
+    id="per-card"
+    @click="navigateToDataV"
+  >
     <div class="per-content fd-col f-c" v-if="personInfo">
       <div class="per-avatar bg-red w-90% relative overflow-hidden">
         <UglyAvatar></UglyAvatar>

@@ -19,6 +19,9 @@ import { componentPlugin } from '@/components'
 import { lazyPlugin } from '@/directives'
 // UnoCSS
 import 'virtual:uno.css'
+// 挂载 echarts
+import Echarts from 'vue-echarts'
+import 'echarts'
 
 const app = createApp(App)
 
@@ -32,5 +35,7 @@ app.use(ELementPlus, {
 app.use(componentPlugin)
 // 注册自定义插件
 app.use(lazyPlugin)
+
+app.component('ECharts', Echarts)
 
 app.mount('#app')
