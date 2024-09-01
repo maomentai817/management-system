@@ -40,7 +40,9 @@ export const useConsumeStore = defineStore('consume', () => {
     const res = await getAllTagsAPI()
     tags.value = res.data
   }
-
+  getIncomeData()
+  getOutcomeData()
+  getTags()
   const refresh = () => {
     getConsumeData()
     getIncomeData()

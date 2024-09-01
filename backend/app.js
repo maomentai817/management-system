@@ -39,6 +39,6 @@ app.use('/',members);
 app.use('/',pictures);
 app.use('/',users);
 
-app.listen(8088,'192.168.1.103', () => {
+app.listen(8088, () => {
   console.log('server running at http://localhost:8088');
 })

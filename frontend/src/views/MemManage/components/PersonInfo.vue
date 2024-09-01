@@ -40,16 +40,12 @@ const navigateToDataV = () => {
 </script>
 
 <template>
-  <CardContainer
-    class="wh-full overflow-hidden cursor-pointer"
-    id="per-card"
-    @click="navigateToDataV"
-  >
+  <CardContainer class="wh-full overflow-hidden cursor-pointer" id="per-card">
     <div class="per-content fd-col f-c" v-if="personInfo">
       <div class="per-avatar bg-red w-90% relative overflow-hidden">
         <UglyAvatar></UglyAvatar>
       </div>
-      <div class="per-info m-t-12 fs-20">
+      <div class="per-info m-t-12 fs-20" @click="navigateToDataV">
         {{ personInfo.name }}
       </div>
     </div>
