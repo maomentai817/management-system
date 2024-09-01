@@ -8,7 +8,13 @@ const members = memberStore.members.map((item) => {
 })
 onMounted(() => {})
 
-const memVal = ref('')
+const props = defineProps({
+  memId: {
+    type: Number,
+    default: 0
+  }
+})
+const memVal = ref(props.memId === 0 ? '' : props.memId)
 const date = ref('')
 const type = ref('all')
 

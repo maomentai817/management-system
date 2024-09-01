@@ -24,7 +24,6 @@ const props = defineProps({
 let myChart = null
 // 定义更新图表的函数
 function updateChart() {
-  console.log(props)
   if (!myChart) return
   const { optionPost: newOption } = usePieConfig(
     props.memId,
@@ -39,8 +38,7 @@ const optionPost = ref(null)
 onMounted(() => {
   const chartDom = document.getElementById('pie-main')
   if (chartDom) {
-    myChart = echarts.init(chartDom, 'dark')
-    // myChart = echarts.init(chartDom)
+    myChart = echarts.init(chartDom)
     updateChart() // 初始化图表
   }
   window.addEventListener('resize', () => {

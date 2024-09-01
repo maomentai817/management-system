@@ -1,75 +1,66 @@
-import { useConsumeStore } from '@/stores'
+import { useConsumeStore, useMemberStore } from '@/stores'
 
 export const usePieConfig = (memId, date, type) => {
   const consumeStore = useConsumeStore()
-  console.log(consumeStore)
-  console.log(memId, date, type)
+  const memberStore = useMemberStore()
+  let name = ''
+  if (memId !== 0 && memId !== '') {
+    name = memberStore.members.find((item) => item.memId === memId)?.name
+  }
+  let dataList
+  if (type === 'income') {
+    dataList = consumeStore.incomeList
+  } else if (type === 'outcome') {
+    dataList = consumeStore.outcomeList
+  } else {
+    dataList = consumeStore.consumeList
+  }
 
-  // consumeStore.consumeList 获取所有数据, 根据  筛选, 处理数据
-  // 数据处理
+  // 处理数据的函数
+  const processData = (list) => {
+    const result = list.reduce((acc, item) => {
+      // 检查 memId 和 date 是否匹配
+      const isMemIdMatch = item.memId === memId || memId === '' || memId === 0
+      const isDateMatch = date === '' || item.consumeDate.slice(0, 7) === date
 
-  const dataPost = [
-    { value: 1048, name: '后厨清洁工' },
-    { value: 735, name: '西式餐饮服务员帮工' },
-    { value: 580, name: '宴席服务帮工' },
-    { value: 484, name: '宴会服务帮工' },
-    { value: 300, name: '礼宾员-门童零工' },
-    { value: 300, name: '中餐饮大厅服务帮工' },
-    { value: 300, name: '厨房帮工' },
-    { value: 300, name: '洗衣房帮工' }
-  ]
+      if (isMemIdMatch && isDateMatch) {
+        // 查找是否已经存在相同 category 的数据
+        const found = acc.find((entry) => entry.name === item.category)
+        if (found) {
+          found.value += item.amount // 累加 value
+        } else {
+          acc.push({ name: item.category, value: item.amount }) // 添加新项
+        }
+      }
+      return acc
+    }, [])
+    return result
+  }
+
+  // 获取去重后的数据
+  const uniqueDataPost = processData(dataList)
+
   const optionPost = {
     title: {
-      text: '岗位来源分类',
+      text: `${name} 收支类型分类`,
       bottom: '10',
       left: 'center'
     },
+    color: [
+      '#b7eb8f',
+      '#95de64',
+      '#73d13d',
+      '#52c41a',
+      '#389e0d',
+      '#237804',
+      '#135200'
+    ],
     tooltip: {
       trigger: 'item'
     },
-    // legend: {
-    //   // 对图形的解释部分
-    //   orient: 'vertical',
-    //   right: 10,
-    //   y: 'center',
-    //   icon: 'circle',
-    //   formatter: (name) => {
-    //     let total = 0
-    //     let target
-    //     for (let i = 0; i < dataPost.length; i++) {
-    //       total += dataPost[i].value
-    //       if (dataPost[i].name === name) {
-    //         target = dataPost[i].value
-    //       }
-    //     }
-    //     const arr = [
-    //       '{a|' + name + '}',
-    //       '{b|' + target + '}',
-    //       '{c|' + ((target / total) * 100).toFixed(2) + '%}'
-    //     ]
-    //     return arr.join('  ')
-    //   },
-    //   textStyle: {
-    //     padding: [10, 0, 0, 0],
-    //     rich: {
-    //       a: {
-    //         fontSize: 15,
-    //         width: 135
-    //       },
-    //       b: {
-    //         fontSize: 15,
-    //         width: 50
-    //       },
-    //       c: {
-    //         fontSize: 15,
-    //         color: '#c1c1c1'
-    //       }
-    //     }
-    //   }
-    // },
     series: [
       {
-        name: '岗位来源分类',
+        name: '收支类型分类',
         type: 'pie',
         radius: ['40%', '70%'],
         center: ['50%', '45%'],
@@ -88,10 +79,10 @@ export const usePieConfig = (memId, date, type) => {
         labelLine: {
           show: false
         },
-        data: dataPost
+        data: uniqueDataPost
       }
-    ],
-    darkMode: true
+    ]
+    // darkMode: true
   }
 
   return { optionPost }

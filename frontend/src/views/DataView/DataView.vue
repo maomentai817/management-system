@@ -13,9 +13,9 @@ import FilterNav from './components/FilterNav/FilterNav.vue'
 import { ref } from 'vue'
 
 const route = useRoute()
-console.log(route.query.id)
+// console.log(route.query.id, typeof route.query.id)
 
-const memId = ref(route.query.id || 0)
+const memId = ref(~~route.query.id || 0)
 const date = ref('')
 const type = ref('all')
 
@@ -42,7 +42,11 @@ const handleFilter = (info) => {
 <template>
   <div class="data-v-container wh-full fd-col">
     <div class="filter-container">
-      <FilterNav @reset="handleReset" @filter="handleFilter"></FilterNav>
+      <FilterNav
+        @reset="handleReset"
+        @filter="handleFilter"
+        :mem-id="memId"
+      ></FilterNav>
     </div>
     <div class="data-v-content f-s flex-wrap mt-15">
       <CardContainer class="chart-card">
