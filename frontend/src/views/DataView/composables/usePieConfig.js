@@ -21,58 +21,58 @@ export const usePieConfig = (memId, date, type) => {
   const optionPost = {
     title: {
       text: '岗位来源分类',
-      bottom: '0',
+      bottom: '10',
       left: 'center'
     },
     tooltip: {
       trigger: 'item'
     },
-    legend: {
-      // 对图形的解释部分
-      orient: 'vertical',
-      right: 10,
-      y: 'center',
-      icon: 'circle',
-      formatter: (name) => {
-        let total = 0
-        let target
-        for (let i = 0; i < dataPost.length; i++) {
-          total += dataPost[i].value
-          if (dataPost[i].name === name) {
-            target = dataPost[i].value
-          }
-        }
-        const arr = [
-          '{a|' + name + '}',
-          '{b|' + target + '}',
-          '{c|' + ((target / total) * 100).toFixed(2) + '%}'
-        ]
-        return arr.join('  ')
-      },
-      textStyle: {
-        padding: [10, 0, 0, 0],
-        rich: {
-          a: {
-            fontSize: 15,
-            width: 135
-          },
-          b: {
-            fontSize: 15,
-            width: 50
-          },
-          c: {
-            fontSize: 15,
-            color: '#c1c1c1'
-          }
-        }
-      }
-    },
+    // legend: {
+    //   // 对图形的解释部分
+    //   orient: 'vertical',
+    //   right: 10,
+    //   y: 'center',
+    //   icon: 'circle',
+    //   formatter: (name) => {
+    //     let total = 0
+    //     let target
+    //     for (let i = 0; i < dataPost.length; i++) {
+    //       total += dataPost[i].value
+    //       if (dataPost[i].name === name) {
+    //         target = dataPost[i].value
+    //       }
+    //     }
+    //     const arr = [
+    //       '{a|' + name + '}',
+    //       '{b|' + target + '}',
+    //       '{c|' + ((target / total) * 100).toFixed(2) + '%}'
+    //     ]
+    //     return arr.join('  ')
+    //   },
+    //   textStyle: {
+    //     padding: [10, 0, 0, 0],
+    //     rich: {
+    //       a: {
+    //         fontSize: 15,
+    //         width: 135
+    //       },
+    //       b: {
+    //         fontSize: 15,
+    //         width: 50
+    //       },
+    //       c: {
+    //         fontSize: 15,
+    //         color: '#c1c1c1'
+    //       }
+    //     }
+    //   }
+    // },
     series: [
       {
         name: '岗位来源分类',
         type: 'pie',
         radius: ['40%', '70%'],
-        center: ['25%', '50%'],
+        center: ['50%', '45%'],
         avoidLabelOverlap: false,
         label: {
           show: false,
@@ -90,7 +90,8 @@ export const usePieConfig = (memId, date, type) => {
         },
         data: dataPost
       }
-    ]
+    ],
+    darkMode: true
   }
 
   return { optionPost }

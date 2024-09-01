@@ -10,6 +10,7 @@ export const useMemberStore = defineStore('member', () => {
     const res = await getMemberAPI()
     members.value = res.data
   }
+  initMembers()
 
   const addMember = async (info) => {
     const res = await addMemberAPI(info)

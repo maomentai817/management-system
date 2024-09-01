@@ -91,31 +91,6 @@ const addHandle = () => {
           </el-select>
         </div>
       </div>
-      <!-- <div class="outcome-box" v-else>
-        <div class="mem-sel w-30%">
-          <el-select v-model="memVal" placeholder="请选择用户名">
-            <el-option
-              v-for="item in members"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </div>
-        <div class="date-sel w-30%">
-          <el-date-picker v-model="date" type="date" placeholder="请选择日期" />
-        </div>
-        <div class="tag-sel w-30%">
-          <el-select v-model="tagVal" placeholder="请选择标签">
-            <el-option
-              v-for="item in tags"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </div>
-      </div> -->
     </div>
     <div class="filter-btn">
       <div class="btn-group">
