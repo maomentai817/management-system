@@ -6,6 +6,13 @@ export const useAreaConfig = (memId, date, type) => {
   if (memId !== 0 && memId !== '') {
     name = memberStore.members.find((item) => item.memId === memId)?.name
   }
+  const direct = memberStore.members.map((item) => {
+    return { name: item.name, memId: item.memId }
+  })
+  const nameDirect = direct.reduce((acc, item) => {
+    acc[item.memId] = item.name
+    return acc
+  }, {})
   let dataList = []
   if (type === 'income') {
     dataList = consumeStore.incomeList
@@ -24,6 +31,7 @@ export const useAreaConfig = (memId, date, type) => {
         const timeUnit = date?.length
           ? item.consumeDate
           : item.consumeDate.slice(0, 7) // 获取年月或完整日期
+        console.log(timeUnit)
         // 如果 date 是空，则按月份统计，否则按天统计
         const isDateMatch = date === '' || item.consumeDate.slice(0, 7) === date
         if (isDateMatch) {
@@ -34,6 +42,7 @@ export const useAreaConfig = (memId, date, type) => {
             found.value += item.amount // 累加 value
           } else {
             acc.unshift({
+              name: nameDirect[item.memId],
               month: timeUnit,
               value: item.amount
             }) // 添加新项
@@ -54,17 +63,51 @@ export const useAreaConfig = (memId, date, type) => {
       item.month = item.month.slice(5, 10)
     })
   }
-  console.log(name)
+  let seriesData = []
+  let months = []
+  if (name === '') {
+    months = [
+      ...new Set(dataList.map((item) => item.consumeDate.slice(0, 7)))
+    ].sort()
+
+    // Step 2: 根据memberName进行分组，并按照月份填充数据
+    seriesData = Object.values(
+      dataList.reduce((acc, { memberName, consumeDate, amount }) => {
+        const month = consumeDate.slice(0, 7)
+        if (!acc[memberName]) {
+          acc[memberName] = {
+            name: memberName,
+            type: 'line',
+            stack: 'Total',
+            areaStyle: {},
+            emphasis: { focus: 'series' },
+            data: Array(months.length).fill(0) // 初始化为0
+          }
+        }
+        const monthIndex = months.indexOf(month)
+        acc[memberName].data[monthIndex] += amount // 叠加金额到对应月份位置
+        return acc
+      }, {})
+    )
+
+    // 输出结果
+    console.log(seriesData)
+  }
+  const titleText = () => {
+    if (type === 'all') return `${name} 月度收支趋势`
+    if (type === 'income') return `${name} 月度收入趋势`
+    return `${name} 月度支出趋势`
+  }
   const optionPost = {
     title: {
-      text: `${name} 月度收支趋势图`,
+      text: titleText(),
       bottom: '10',
       left: 'center'
     },
     xAxis: {
       type: 'category',
       boundaryGap: false,
-      data: areaChartData.map((item) => item.month)
+      data: name ? areaChartData.map((item) => item.month) : months
     },
     yAxis: {
       type: 'value'
@@ -81,13 +124,15 @@ export const useAreaConfig = (memId, date, type) => {
     tooltip: {
       trigger: 'axis'
     },
-    series: [
-      {
-        data: areaChartData.map((item) => item.value),
-        type: 'line',
-        areaStyle: {}
-      }
-    ]
+    series: name
+      ? [
+          {
+            data: areaChartData.map((item) => item.value),
+            type: 'line',
+            areaStyle: {}
+          }
+        ]
+      : seriesData
   }
 
   return { optionPost }
