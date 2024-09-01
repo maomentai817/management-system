@@ -31,7 +31,6 @@ export const useAreaConfig = (memId, date, type) => {
         const timeUnit = date?.length
           ? item.consumeDate
           : item.consumeDate.slice(0, 7) // 获取年月或完整日期
-        console.log(timeUnit)
         // 如果 date 是空，则按月份统计，否则按天统计
         const isDateMatch = date === '' || item.consumeDate.slice(0, 7) === date
         if (isDateMatch) {
@@ -91,7 +90,7 @@ export const useAreaConfig = (memId, date, type) => {
     )
 
     // 输出结果
-    console.log(seriesData)
+    // console.log(seriesData)
   }
   const titleText = () => {
     if (type === 'all') return `${name} 月度收支趋势`
@@ -112,15 +111,15 @@ export const useAreaConfig = (memId, date, type) => {
     yAxis: {
       type: 'value'
     },
-    color: [
-      '#b7eb8f',
-      '#95de64',
-      '#73d13d',
-      '#52c41a',
-      '#389e0d',
-      '#237804',
-      '#135200'
-    ],
+    // color: [
+    //   '#b7eb8f',
+    //   '#95de64',
+    //   '#73d13d',
+    //   '#52c41a',
+    //   '#389e0d',
+    //   '#237804',
+    //   '#135200'
+    // ],
     tooltip: {
       trigger: 'axis'
     },

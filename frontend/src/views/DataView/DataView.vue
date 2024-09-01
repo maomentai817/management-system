@@ -1,9 +1,9 @@
 <script setup>
 import { useRoute } from 'vue-router'
 import AreaChart from './components/AreaChart/AreaChart.vue'
-import BarChart from './components/BarChart/BarChart.vue'
+// import BarChart from './components/BarChart/BarChart.vue'
 import HeatMap from './components/HeatMap/HeatMap.vue'
-import LineChart from './components/LineChart/LineChart.vue'
+// import LineChart from './components/LineChart/LineChart.vue'
 import PieChart from './components/PieChart/PieChart.vue'
 import RadarChart from './components/RadarChart/RadarChart.vue'
 import SankeyDiagram from './components/SankeyDiagram/SankeyDiagram.vue'
@@ -52,12 +52,12 @@ const handleFilter = (info) => {
       <CardContainer class="chart-card">
         <PieChart :mem-id="memId" :date="date" :type="type"></PieChart>
       </CardContainer>
-      <CardContainer class="chart-card">
+      <!-- <CardContainer class="chart-card">
         <BarChart :mem-id="memId" :date="date" :type="type"></BarChart>
-      </CardContainer>
-      <CardContainer class="chart-card">
+      </CardContainer> -->
+      <!-- <CardContainer class="chart-card">
         <LineChart :mem-id="memId" :date="date" :type="type"></LineChart>
-      </CardContainer>
+      </CardContainer> -->
       <CardContainer class="chart-card">
         <ScatterPlot :mem-id="memId" :date="date" :type="type"></ScatterPlot>
       </CardContainer>

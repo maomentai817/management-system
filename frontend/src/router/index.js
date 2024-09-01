@@ -10,7 +10,7 @@ const router = createRouter({
       path: '/',
       name: 'LayoutContainer',
       component: () => import('@/views/LayoutContainer/LayoutContainer.vue'),
-      redirect: '/data-view',
+      redirect: '/user-center',
       children: [
         {
           path: '/data-view',

@@ -46,15 +46,15 @@ export const usePieConfig = (memId, date, type) => {
       bottom: '10',
       left: 'center'
     },
-    color: [
-      '#b7eb8f',
-      '#95de64',
-      '#73d13d',
-      '#52c41a',
-      '#389e0d',
-      '#237804',
-      '#135200'
-    ],
+    // color: [
+    //   '#b7eb8f',
+    //   '#95de64',
+    //   '#73d13d',
+    //   '#52c41a',
+    //   '#389e0d',
+    //   '#237804',
+    //   '#135200'
+    // ],
     tooltip: {
       trigger: 'item'
     },
