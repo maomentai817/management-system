@@ -1,5 +1,9 @@
 <script setup></script>
 
-<template>ai</template>
+<template>
+  <div class="ai-container h-full">
+    <CardContainer class="h-full">1212</CardContainer>
+  </div>
+</template>
 
 <style lang="scss" scoped></style>

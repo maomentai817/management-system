@@ -63,6 +63,7 @@ const handleClose = (index) => {
         </svg>
         <span
           class="fs-16 fw-700 pl-8 text-overflow"
+          id="title"
           :class="globalStore.isDark ? 'dark-mode' : 'light-mode'"
           v-show="!globalStore.isCollapse"
           >家庭收支管理</span
@@ -114,5 +115,8 @@ const handleClose = (index) => {
 :deep(.el-menu-item) {
   justify-content: center;
   padding-left: 0 !important;
+}
+#title {
+  font-family: 'Luckiest Guy';
 }
 </style>

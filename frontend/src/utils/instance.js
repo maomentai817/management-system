@@ -9,7 +9,7 @@ const baseURL = 'http://192.168.1.103:8088/'
 
 const instance = axios.create({
   baseURL,
-  timeout: 5000
+  timeout: 10000
 })
 
 // 添加请求拦截器

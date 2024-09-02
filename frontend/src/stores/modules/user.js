@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { loginAPI } from '@/api/user.js'
+import { loginAPI, updateAvatarAPI, updateUsernameAPI } from '@/api/user.js'
 
 export const useUserStore = defineStore(
   'user',
@@ -16,15 +16,26 @@ export const useUserStore = defineStore(
       }
       return res
     }
-
     const clearUserInfo = () => {
       userInfo.value = {}
+    }
+
+    const updateAvatar = async (baseStr) => {
+      await updateAvatarAPI(baseStr)
+      userInfo.value.avatar = baseStr
+    }
+
+    const updateUsername = async (username) => {
+      await updateUsernameAPI(username)
+      userInfo.value.username = username
     }
     // getters
     return {
       userInfo,
       getUserInfo,
-      clearUserInfo
+      clearUserInfo,
+      updateAvatar,
+      updateUsername
     }
   },
   // 本地持久化
