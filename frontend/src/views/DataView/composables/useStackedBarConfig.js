@@ -48,7 +48,6 @@ export const useStackedBarConfig = (memId, date, type) => {
     sourceData = Object.values(result).sort(
       (a, b) => new Date(a.month) - new Date(b.month)
     )
-    console.log('sourceData: ', sourceData)
   } else if (!memId && date) {
     // n 用户当月
     dimensionsPre = ['day', ...Object.values(nameDirect)]
@@ -132,8 +131,6 @@ export const useStackedBarConfig = (memId, date, type) => {
     sourceData = processByDayAndMemId(dataPre, date, memId)
   }
 
-  console.log(sourceData)
-  console.log(dimensionsPre)
   const optionPost = {
     legend: {},
     tooltip: {},

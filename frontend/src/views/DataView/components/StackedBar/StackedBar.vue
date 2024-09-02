@@ -23,7 +23,6 @@ const props = defineProps({
 let myChart = null
 // 定义更新图表的函数
 function updateChart() {
-  console.log(props)
   if (!myChart) return
   const { optionPost: newOption } = useStackedBarConfig(
     props.memId,
