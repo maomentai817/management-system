@@ -21,9 +21,17 @@ exports.login = (req, res) => {
         }
         // 登录成功, 生成 token
         // ES6 高级语法, 剔除私密信息
-        const user = { ...results[0], password: '', user_pic: '' };
+        const user = { ...results[0], password: '', avatar: '' };
+        console.log(user)
         // 生成 Token 字符串
         const tokenStr = jwt.sign(user, config.jwtSecretKey, { expiresIn: config.expiresIn });
+
+        const buffer = results[0].avatar
+        console.log(buffer) 
+        if(buffer) {
+            userInfo.avatar = `data:image/jpg;base64,${buffer.toString('base64')}`
+            console.log(userInfo.avatar)
+        }
         // 响应给客户端
         res.send({
             status: 200,
