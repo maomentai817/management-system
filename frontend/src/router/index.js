@@ -36,6 +36,11 @@ const router = createRouter({
           path: '/user-center',
           name: 'UserCenter',
           component: () => import('@/views/UserCenter/UserCenter.vue')
+        },
+        {
+          path: '/ai-chat',
+          name: 'AiChat',
+          component: () => import('@/views/AiChat/AiChat.vue')
         }
       ]
     },

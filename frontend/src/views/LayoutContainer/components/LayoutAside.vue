@@ -4,7 +4,8 @@ import {
   UserFilled,
   Money,
   WalletFilled,
-  Help
+  Help,
+  Service
 } from '@element-plus/icons-vue'
 import { useGlobalStore } from '@/stores'
 import { useRouter } from 'vue-router'
@@ -17,7 +18,8 @@ const pathTitlt = {
   '/mem-manage': '成员信息',
   '/income': '收入管理',
   '/outcome': '支出管理',
-  '/user-center': '用户中心'
+  '/user-center': '用户中心',
+  '/ai-chat': 'AI 助手'
 }
 const handleOpen = (index) => {
   if (index) {
@@ -81,6 +83,10 @@ const handleClose = (index) => {
       <el-menu-item index="/outcome">
         <el-icon><WalletFilled /></el-icon>
         <template #title>支出管理</template>
+      </el-menu-item>
+      <el-menu-item index="/ai-chat">
+        <el-icon><Service /></el-icon>
+        <template #title>&nbsp;AI&nbsp;&nbsp;助手</template>
       </el-menu-item>
       <el-menu-item index="/user-center">
         <el-icon><Help /></el-icon>

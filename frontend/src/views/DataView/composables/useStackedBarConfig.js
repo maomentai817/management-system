@@ -1,5 +1,5 @@
 import { useConsumeStore, useMemberStore } from '@/stores'
-
+import config from './config'
 export const useStackedBarConfig = (memId, date, type) => {
   const consumeStore = useConsumeStore()
   const memberStore = useMemberStore()
@@ -130,10 +130,10 @@ export const useStackedBarConfig = (memId, date, type) => {
     }
     sourceData = processByDayAndMemId(dataPre, date, memId)
   }
-
   const optionPost = {
     legend: {},
     tooltip: {},
+    color: config.color[type],
     title: {
       text: titleText,
       bottom: '10',
