@@ -14,7 +14,7 @@ exports.getUserInfo = (req,res) => {
 
     if(results[0].avatar) {
       const buffer = results[0].avatar
-      const base64Image = `data:image/png;base64,${buffer.toString('base64')}`
+      const base64Image = `data:image/jpg;base64,${buffer.toString('base64')}`
       results[0].avatar = base64Image
     }
     return res.send({
@@ -43,6 +43,7 @@ exports.updateUserName = (req,res) => {
 
 exports.updateAvatar = (req,res) => {
   const {avatar} = req.body
+  // console.log(avatar)
   const base64Data = avatar.replace(/^data:image\/\w+;base64,/,'');
   const buffer = Buffer.from(base64Data,'base64')
 

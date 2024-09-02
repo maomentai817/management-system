@@ -27,10 +27,10 @@ exports.login = (req, res) => {
         const tokenStr = jwt.sign(user, config.jwtSecretKey, { expiresIn: config.expiresIn });
 
         const buffer = results[0].avatar
-        console.log(buffer) 
+        // console.log(buffer) 
         if(buffer) {
             userInfo.avatar = `data:image/jpg;base64,${buffer.toString('base64')}`
-            console.log(userInfo.avatar)
+            // console.log(userInfo.avatar)
         }
         // 响应给客户端
         res.send({
