@@ -24,7 +24,7 @@ app.use((req, res, next) => {
   next();
 })
 
-app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: ['/login', '/pictures'] }));
+app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: ['/login', '/pictures', '/ai', '/ai/clear'] }));
 
 app.use('/uploads', express.static('./uploads'))
 
@@ -33,12 +33,14 @@ const consumes = require('./router/consume.js');
 const members = require('./router/member.js');
 const pictures = require('./router/picture.js');
 const users = require('./router/user.js')
+const ai = require('./router/ai.js')
 app.use('/api', sqltest);
 app.use('/',consumes);
 app.use('/',members);
 app.use('/',pictures);
 app.use('/',users);
+app.use('/',ai);
 
-app.listen(8088, () => {
+app.listen(8088, '192.168.1.103', () => {
   console.log('server running at http://localhost:8088');
 })
