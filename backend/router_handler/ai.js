@@ -30,6 +30,7 @@ exports.financialHelper = (req, res) => {
 
       const requestData = {
         messages: msgList,
+        stream: true,
         // [
         //   { role: 'user', content: userMessage }
         // ],
