@@ -58,6 +58,7 @@ export const useAreaConfig = (memId, date, type) => {
 
   // 获取去重后的数据
   const areaChartData = processDataForAreaChart(dataList, date)
+  // console.log(areaChartData)
   if (date.length) {
     areaChartData.forEach((item) => {
       item.month = item.month.slice(5, 10)

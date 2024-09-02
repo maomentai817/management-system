@@ -1,6 +1,6 @@
 <script setup>
 import { useTransition } from '@vueuse/core'
-import { Money } from '@element-plus/icons-vue'
+import { Money, Download } from '@element-plus/icons-vue'
 import { watch, ref } from 'vue'
 
 const props = defineProps({
@@ -45,7 +45,12 @@ const exportCSV = () => {
       </el-statistic>
     </div>
     <div class="download-box">
-      <el-button type="success" plain @click="exportCSV">导出数据</el-button>
+      <el-button type="success" plain @click="exportCSV">
+        <span class="f-c">
+          <el-icon><Download /></el-icon>
+          <span>导出数据</span>
+        </span>
+      </el-button>
     </div>
   </div>
 </template>
