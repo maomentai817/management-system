@@ -6,8 +6,8 @@ const {url} = require('../uploads/picurl.js')
 exports.getPicture =(req,res) => {
 
     const getRandomImages = (count) => {
-        console.log("running the funciton")
-        console.log(url)
+        // console.log("running the funciton")
+        // console.log(url)
         const shuffled = url.sort(() => 0.5 - Math.random());
         return shuffled.slice(0, count);
     }

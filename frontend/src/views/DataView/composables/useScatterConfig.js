@@ -1,3 +1,4 @@
+
 import { useConsumeStore } from '@/stores'
 
 export const useScatterConfig = (memId, date, type) => {
@@ -40,6 +41,7 @@ export const useScatterConfig = (memId, date, type) => {
 
     for (const item of list) {
       const { name, date, amount } = item
+
 
       if (!groupedData[name]) {
         groupedData[name] = {}
@@ -108,11 +110,13 @@ export const useScatterConfig = (memId, date, type) => {
 
   const { legend, seriesData } = processData(filterData)
 
+
   const optionPost = {
     title: {
       text: '收支日期图',
       bottom: '10',
       left: 'center'
+
     },
     grid: {
       left: '3%',
@@ -153,6 +157,7 @@ export const useScatterConfig = (memId, date, type) => {
         }
       }
     },
+
     legend: {
       data: legend,
       left: 'center',
@@ -174,10 +179,12 @@ export const useScatterConfig = (memId, date, type) => {
                 // 只显示每个月的第一个日期
                 return day === 1 ? `${year}-${month}` : ''
               }
+
         },
         splitLine: {
           show: false
         }
+
       }
     ],
     yAxis: [
