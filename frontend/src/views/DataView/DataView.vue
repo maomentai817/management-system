@@ -1,5 +1,5 @@
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import AreaChart from './components/AreaChart/AreaChart.vue'
 import HeatMap from './components/HeatMap/HeatMap.vue'
 import PieChart from './components/PieChart/PieChart.vue'
@@ -8,8 +8,11 @@ import ScatterPlot from './components/ScatterPlot/ScatterPlot.vue'
 import StackedBar from './components/StackedBar/StackedBar.vue'
 import FilterNav from './components/FilterNav/FilterNav.vue'
 import { ref } from 'vue'
+import { useAiStore } from '@/stores'
 
 const route = useRoute()
+const router = useRouter()
+const aiStore = useAiStore()
 // console.log(route.query.id, typeof route.query.id)
 
 const memId = ref(~~route.query.id || 0)
@@ -34,6 +37,14 @@ const handleFilter = (info) => {
   date.value = info.date
   type.value = info.type
 }
+
+const handleAnalyze = async (info) => {
+  await aiStore.clearMessage()
+  aiStore.insertMessage('user', info.message)
+  router.push(
+    `/ai-chat?memId=${info.memId}&date=${info.date}&type=${info.type}`
+  )
+}
 </script>
 
 <template>
@@ -42,6 +53,7 @@ const handleFilter = (info) => {
       <FilterNav
         @reset="handleReset"
         @filter="handleFilter"
+        @analyze="handleAnalyze"
         :mem-id="memId"
       ></FilterNav>
     </div>

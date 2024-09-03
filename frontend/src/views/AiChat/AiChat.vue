@@ -1,18 +1,78 @@
 <script setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, onMounted } from 'vue'
 import { Position, Delete } from '@element-plus/icons-vue'
 import { useUserStore, useAiStore, useGlobalStore } from '@/stores'
 import aiAvatar from '@/assets/images/ai.png'
 import { baseURL } from '@/utils/instance'
 import MarkdownIt from 'markdown-it'
+import { useRoute } from 'vue-router'
 
 const md = new MarkdownIt()
 const userStore = useUserStore()
 const aiStore = useAiStore()
 const globalStore = useGlobalStore()
+const route = useRoute()
+
+const dataAnalyze = async (memId, date, type) => {
+  // 添加空AI消息
+  aiStore.insertMessage('ai', '')
+
+  // 获取AI消息索引
+  const aiMessageIndex = aiStore.messages.length - 1
+
+  isLoading.value = true
+  // 调用接口
+  const response = await fetch(
+    `${baseURL}aistream?memId=${memId}&date=${date}&type=${type}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userStore.userInfo?.token}`
+      }
+    }
+  )
+
+  const reader = response.body.getReader()
+  const decoder = new TextDecoder('utf-8')
+
+  let done = false
+  while (!done) {
+    const { value, done: readerDone } = await reader.read()
+    done = readerDone
+    if (value) {
+      const text = decoder.decode(value, { stream: true })
+      const lines = text.split('$')
+
+      lines.forEach((line) => {
+        if (line.startsWith('data:')) {
+          const char = line.replace('data: ', '').trim()
+          console.log(char)
+          if (char === '🐱') {
+            aiStore.updateAiMessage(aiMessageIndex, '\n')
+          } else {
+            aiStore.updateAiMessage(aiMessageIndex, char)
+          }
+          scrollToBottom()
+        }
+      })
+    }
+  }
+
+  // 结束
+  scrollToBottom()
+  isLoading.value = false
+}
+
+onMounted(async () => {
+  scrollToBottom()
+  if (JSON.stringify(route.query) === '{}') return
+  // console.log(route.query.memId, route.query.date, route.query.type)
+  await dataAnalyze(route.query.memId, route.query.date, route.query.type)
+})
+
 const userInput = ref('')
 const isLoading = ref(false)
-
 const chatBox = ref(null)
 const scrollToBottom = async () => {
   await nextTick(() => {
@@ -79,6 +139,15 @@ const sendMessage = async () => {
   // 结束
   scrollToBottom()
   isLoading.value = false
+}
+
+const clearMessage = async () => {
+  await aiStore.clearMessage()
+  ElNotification({
+    message: '清空成功',
+    type: 'success',
+    duration: 2000
+  })
 }
 </script>
 
@@ -161,10 +230,7 @@ const sendMessage = async () => {
               </el-button>
             </template>
             <template #prefix>
-              <div
-                class="clear-btn f-c cursor-pointer"
-                @click="aiStore.clearMessage"
-              >
+              <div class="clear-btn f-c cursor-pointer" @click="clearMessage">
                 <el-icon size="24"> <Delete /></el-icon>
               </div>
             </template>

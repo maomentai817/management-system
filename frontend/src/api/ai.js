@@ -14,11 +14,10 @@ export const chatAPI = (message) => {
 /**
  * @description 数据分析 ai
  */
-export const analysisAPI = (message) => {
+export const analysisAPI = (info) => {
   return instance({
-    url: '/ai',
-    method: 'post',
-    data: { message }
+    url: `/aistream?memId=${info.memId}&date=${info.date}&type=${info.type}`,
+    method: 'post'
   })
 }
 
@@ -27,7 +26,7 @@ export const analysisAPI = (message) => {
  */
 export const clearAiAPI = () => {
   return instance({
-    url: '/ai/clear',
+    url: '/aistream/clear',
     method: 'get'
   })
 }

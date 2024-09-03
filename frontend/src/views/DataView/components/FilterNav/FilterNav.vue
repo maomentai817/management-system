@@ -1,12 +1,11 @@
 <script setup>
 import { useMemberStore } from '@/stores'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 const memberStore = useMemberStore()
 const members = memberStore.members.map((item) => {
   return { value: item.name, label: item.name, id: item.memId }
 })
-onMounted(() => {})
 
 const props = defineProps({
   memId: {
@@ -18,7 +17,7 @@ const memVal = ref(props.memId === 0 ? '' : props.memId)
 const date = ref('')
 const type = ref('all')
 
-const emits = defineEmits(['filter', 'reset'])
+const emits = defineEmits(['filter', 'reset', 'analyze'])
 const resetHandle = () => {
   memVal.value = ''
   date.value = ''
@@ -40,6 +39,36 @@ const filterHandle = () => {
     date: formattedDate,
     type: type.value
   })
+}
+
+const handleAnalyze = () => {
+  let dateStr = ''
+  let name = ''
+  if (date.value) {
+    dateStr = new Intl.DateTimeFormat('en-CA', {
+      year: 'numeric',
+      month: '2-digit'
+    }).format(new Date(date.value))
+  }
+  if (memVal.value) {
+    name = members.find((item) => item.id === memVal.value)?.label
+  }
+
+  let message = ''
+  let typeStr = `${type.value === 'all' ? '收支' : type.value === 'income' ? '收入' : '支出'}`
+  if (dateStr && name)
+    message = `请帮我分析 ${name} 在 ${dateStr} 的${typeStr}情况`
+  else if (dateStr && !name) message = `请帮我分析 ${dateStr} 的${typeStr}情况`
+  else if (!dateStr && name) message = `请帮我分析 ${name} 的${typeStr}情况`
+  else message = `请帮我分析总${typeStr}情况`
+
+  const info = {
+    memId: memVal.value || '',
+    date: dateStr || '',
+    type: type.value,
+    message
+  }
+  emits('analyze', info)
 }
 </script>
 
@@ -75,6 +104,9 @@ const filterHandle = () => {
     </div>
     <div class="filter-btn">
       <div class="btn-group">
+        <el-button type="primary" plain @click="handleAnalyze"
+          >数据分析</el-button
+        >
         <el-button type="primary" plain @click="filterHandle">查询</el-button>
         <el-button type="primary" plain @click="resetHandle">重置</el-button>
       </div>
