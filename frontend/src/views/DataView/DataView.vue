@@ -1,7 +1,7 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
 import AreaChart from './components/AreaChart/AreaChart.vue'
-import HeatMap from './components/HeatMap/HeatMap.vue'
+// import HeatMap from './components/HeatMap/HeatMap.vue'
 import PieChart from './components/PieChart/PieChart.vue'
 import RadarChart from './components/RadarChart/RadarChart.vue'
 import ScatterPlot from './components/ScatterPlot/ScatterPlot.vue'
@@ -73,9 +73,9 @@ const handleAnalyze = async (info) => {
       <CardContainer class="chart-card">
         <StackedBar :mem-id="memId" :date="date" :type="type"></StackedBar>
       </CardContainer>
-      <CardContainer class="chart-card">
+      <!-- <CardContainer class="chart-card">
         <HeatMap :mem-id="memId" :date="date" :type="type"></HeatMap>
-      </CardContainer>
+      </CardContainer> -->
     </div>
   </div>
 </template>
