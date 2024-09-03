@@ -3,9 +3,10 @@ import { ref, nextTick } from 'vue'
 import { Position, Delete } from '@element-plus/icons-vue'
 import { useUserStore, useAiStore, useGlobalStore } from '@/stores'
 import aiAvatar from '@/assets/images/ai.png'
-import { chatAPI } from '@/api/ai'
-// import { baseURL } from '@/utils/instance'
+import { baseURL } from '@/utils/instance'
+import MarkdownIt from 'markdown-it'
 
+const md = new MarkdownIt()
 const userStore = useUserStore()
 const aiStore = useAiStore()
 const globalStore = useGlobalStore()
@@ -26,6 +27,7 @@ const sendMessage = async () => {
 
   // 添加用户消息
   aiStore.insertMessage('user', userInput.value)
+  scrollToBottom()
 
   // 清空输入框
   const inputMsg = userInput.value
@@ -37,21 +39,46 @@ const sendMessage = async () => {
   // 获取AI消息索引
   const aiMessageIndex = aiStore.messages.length - 1
 
-  // 调用接口
   isLoading.value = true
-  const res = await chatAPI(inputMsg)
-  isLoading.value = false
+  // 调用接口
+  const response = await fetch(`${baseURL}aistream`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${userStore.userInfo?.token}`
+    },
+    body: JSON.stringify({ message: inputMsg })
+  })
 
-  // // 逐字更新AI消息
-  // await aiStore.updateAiMessage(aiMessageIndex, res.result)
-  // scrollToBottom()
-  // 逐字更新AI消息
-  for (let i = 0; i < res.result.length; i++) {
-    await new Promise((resolve) => setTimeout(resolve, 50)) // 延迟以实现打字效果
-    aiStore.messages[aiMessageIndex].text += res.result[i]
-    scrollToBottom() // 每次更新内容后滚动到底部
+  const reader = response.body.getReader()
+  const decoder = new TextDecoder('utf-8')
+
+  let done = false
+  while (!done) {
+    const { value, done: readerDone } = await reader.read()
+    done = readerDone
+    if (value) {
+      const text = decoder.decode(value, { stream: true })
+      const lines = text.split('$')
+
+      lines.forEach((line) => {
+        if (line.startsWith('data:')) {
+          const char = line.replace('data: ', '').trim()
+          console.log(char)
+          if (char === '🐱') {
+            aiStore.updateAiMessage(aiMessageIndex, '\n')
+          } else {
+            aiStore.updateAiMessage(aiMessageIndex, char)
+          }
+          scrollToBottom()
+        }
+      })
+    }
   }
+
+  // 结束
   scrollToBottom()
+  isLoading.value = false
 }
 </script>
 
@@ -88,19 +115,40 @@ const sendMessage = async () => {
                 <el-avatar :src="userStore.userInfo.avatar"></el-avatar>
               </div>
             </div>
-            <div v-else class="ai-message f-b">
-              <div class="avatar f-c">
+            <div v-else class="ai-message flex">
+              <div class="avatar">
                 <el-avatar :src="aiAvatar"></el-avatar>
               </div>
               <div
                 class="message-content text-left p-x-30 break-words max-w-120rem"
               >
-                {{ message.text }}
+                <!-- 当 isLoading 为 true 且当前消息为最后一条时，使用插值表达式渲染 -->
+                <template
+                  v-if="isLoading && index === aiStore.messages.length - 1"
+                >
+                  {{ message.text ? message.text : '嘻嘻喵🐱' }} ✨
+                </template>
+
+                <!-- 当 isLoading 为 false 时，使用 v-html 渲染 message.text -->
+                <template v-else>
+                  <div
+                    v-html="
+                      md.render(
+                        message.text
+                          ? message.text
+                              .replace(/(?<!\*)\*(?!\*)/g, '* ')
+                              .replace(/([.\-])/g, '$1 ')
+                          : '嘻嘻喵🐱'
+                      )
+                    "
+                  ></div>
+                </template>
               </div>
             </div>
           </div>
         </div>
         <div class="input-box">
+          <!-- <div class="tip-btn bg-red">快捷短语</div> -->
           <el-input
             v-model="userInput"
             placeholder="请输入您的问题..."

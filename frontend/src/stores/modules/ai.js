@@ -25,11 +25,8 @@ export const useAiStore = defineStore(
     }
 
     // 逐字更新AI消息
-    const updateAiMessage = async (index, fullText) => {
-      for (let i = 0; i < fullText.length; i++) {
-        await new Promise((resolve) => setTimeout(resolve, 50))
-        messages.value[index].text += fullText[i]
-      }
+    const updateAiMessage = async (index, char) => {
+      messages.value[index].text += char
     }
     return {
       messages,

@@ -108,7 +108,6 @@ export const useScatterConfig = (memId, date, type) => {
 
   const { legend, seriesData } = processData(filterData)
 
-  console.log('here is the ScatterData', seriesData)
   const optionPost = {
     title: {
       text: '收支日期图',

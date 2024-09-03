@@ -76,7 +76,8 @@ const handleClose = () => {
   drawer.value = false
 }
 
-const exportCSV = () => {
+const exportCSVIncome = (type) => {
+  if (type === 'outcome') return
   const csvData = filterData.value.map((row) => ({
     交易时间: row.consumeDate,
     交易类型: row.category,
@@ -132,7 +133,7 @@ const exportCSV = () => {
         </FilterBox>
       </div>
       <div class="statistic-container mb-10">
-        <StatisticContainer :data="sumData" @export="exportCSV">
+        <StatisticContainer :data="sumData" @export="exportCSVIncome">
         </StatisticContainer>
       </div>
       <div class="table-container">

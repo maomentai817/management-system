@@ -11,6 +11,10 @@ const props = defineProps({
   data: {
     type: Number,
     default: 0
+  },
+  type: {
+    type: String,
+    default: 'income'
   }
 })
 
@@ -29,7 +33,7 @@ watch(
 
 const emit = defineEmits(['export'])
 const exportCSV = () => {
-  emit('export')
+  emit('export', props.type)
 }
 </script>
 
@@ -45,10 +49,10 @@ const exportCSV = () => {
       </el-statistic>
     </div>
     <div class="download-box">
-      <el-button type="success" plain @click="exportCSV">
+      <el-button type="success" plain>
         <span class="f-c">
           <el-icon><Download /></el-icon>
-          <span>导出数据</span>
+          <span @click="exportCSV">导出数据</span>
         </span>
       </el-button>
     </div>
