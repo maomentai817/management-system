@@ -24,7 +24,7 @@ app.use((req, res, next) => {
   next();
 })
 
-app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: ['/login', '/pictures',] }));
+app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: ['/login', '/pictures','/aistream'] }));
 
 app.use('/uploads', express.static('./uploads'))
 
@@ -43,6 +43,6 @@ app.use('/',users);
 app.use('/',ai);
 app.use('/',user_center);
 
-app.listen(8088, '192.168.1.103', () => {
+app.listen(8088, '192.168.22.101', () => {
   console.log('server running at http://localhost:8088');
 })

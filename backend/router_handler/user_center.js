@@ -26,13 +26,14 @@ exports.getUserInfo = (req,res) => {
 }
 
 exports.updateUserName = (req,res) => {
-  const sqlStr = 'update users set ? where username = ?'
+  const sqlStr = 'update users set username=? where username = ?'
+  // console.log(req)
   const userInfoData = {
     username: req.body.username,
   }
-  db.query(sqlStr, [req.body, req.query.username], (err, results)=> {
+  db.query(sqlStr, [req.body.username, req.query.username], (err, results)=> {
     if(err)
-      return res.cc(error,500)
+      return res.cc(err,500)
     return res.send({
       status:200,
       msg: '修改用户名成功',

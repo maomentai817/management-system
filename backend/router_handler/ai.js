@@ -4,6 +4,7 @@ const secretKey = 'skqJdZhUGOLfaLXgDCvf1vIwwjQYXIUX';
 const tokenUrl = `https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=${apiKey}&client_secret=${secretKey}`;
 const axios = require('axios')
 
+
 let msgList = []
 
 exports.clearMsgList = (req, res) => {
@@ -30,7 +31,7 @@ exports.financialHelper = (req, res) => {
 
       const requestData = {
         messages: msgList,
-        stream: true,
+        // stream: true,
         // [
         //   { role: 'user', content: userMessage }
         // ],
@@ -52,10 +53,13 @@ exports.financialHelper = (req, res) => {
     })
     .then(response => {
       msgList.push({role:'assistant',content:response.data.result})
+      // console.log(response)
       res.json(response.data);
     })
     .catch(error => {
       console.error('Error:', error);
       res.status(500).send('Internal Server Error');
     });
+
+  
 }

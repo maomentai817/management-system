@@ -1,10 +1,9 @@
-import {useConsumeStore, useMemberStore} from '@/stores'
+import { useConsumeStore, useMemberStore } from '@/stores'
 
-export const useScatterConfig = (memId,date,type) => {
-
+export const useScatterConfig = (memId, date, type) => {
   const consumeStore = useConsumeStore()
   const memberStore = useMemberStore()
-  
+
   let dataPre = []
   const dataDeal = (list) => {
     return list.map((item) => {
@@ -34,7 +33,6 @@ export const useScatterConfig = (memId,date,type) => {
     return memIdMatch && dateMatch
   })
 
-
   const processData = (list) => {
     const seriesData = []
     const groupedData = {}
@@ -42,27 +40,27 @@ export const useScatterConfig = (memId,date,type) => {
     const legend = [...new Set(list.map((item) => item.name))]
 
     for (const item of list) {
-      const { name, date, amount} = item;
+      const { name, date, amount } = item
       // console.log('test origin data' ,list)
 
-      if(!groupedData[name]) {
+      if (!groupedData[name]) {
         groupedData[name] = {}
       }
 
-      if(!groupedData[name][date]) {
+      if (!groupedData[name][date]) {
         groupedData[name][date] = 0
       }
 
-      groupedData[name][date] += amount;
+      groupedData[name][date] += amount
     }
-    
+
     for (const name in groupedData) {
       const data = []
 
       for (const date in groupedData[name]) {
-        data.push([date,groupedData[name][date]])
+        data.push([date, groupedData[name][date]])
       }
-    
+
       seriesData.push({
         name: name,
         type: 'scatter',
@@ -105,13 +103,12 @@ export const useScatterConfig = (memId,date,type) => {
           data: [{ type: 'average', name: 'AVG' }, { xAxis: 160 }]
         }
       })
-
     }
-    
-    return {legend, seriesData}
+
+    return { legend, seriesData }
   }
 
-  const {legend, seriesData} = processData(filterData)
+  const { legend, seriesData } = processData(filterData)
 
   console.log('here is the ScatterData', seriesData)
   const optionPost = {
@@ -139,7 +136,7 @@ export const useScatterConfig = (memId,date,type) => {
             ' ' +
             params.value[1] +
             '￥ '
-          );
+          )
         } else {
           return (
             params.seriesName +
@@ -148,7 +145,7 @@ export const useScatterConfig = (memId,date,type) => {
             ' : ' +
             params.value +
             '￥ '
-          );
+          )
         }
       },
       axisPointer: {
@@ -179,15 +176,17 @@ export const useScatterConfig = (memId,date,type) => {
         type: 'time',
         // scale: true,
         axisLabel: {
-          formatter: date ? '{MM}-{dd}' : function (value) {
-            const date = new Date(value);
-            const year = date.getFullYear();
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const day = date.getDate();
+          formatter: date
+            ? '{MM}-{dd}'
+            : function (value) {
+                const date = new Date(value)
+                const year = date.getFullYear()
+                const month = (date.getMonth() + 1).toString().padStart(2, '0')
+                const day = date.getDate()
 
-            // 只显示每个月的第一个日期
-            return day === 1 ? `${year}-${month}` : '';
-          },
+                // 只显示每个月的第一个日期
+                return day === 1 ? `${year}-${month}` : ''
+              }
           // interval: 1,
           // hideOverlap: true
           // showMinLable: false
@@ -195,12 +194,11 @@ export const useScatterConfig = (memId,date,type) => {
         },
         splitLine: {
           show: false
-        },
+        }
         // splitNumber: 10,
         // minInterval: ,
         // maxInterval: 10,
         // interval: 1,
-
       }
     ],
     yAxis: [
@@ -216,6 +214,6 @@ export const useScatterConfig = (memId,date,type) => {
       }
     ],
     series: seriesData
-  };
-  return {optionPost}
+  }
+  return { optionPost }
 }
