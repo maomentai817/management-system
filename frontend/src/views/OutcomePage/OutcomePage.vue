@@ -2,8 +2,9 @@
 import CardContainer from '@/components/modules/CardContainer/CardContainer.vue'
 import { useOutcomeData } from './composables/config'
 import { useConsumeStore } from '@/stores'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, computed } from 'vue'
 import { getFilterOutcomeAPI } from '@/api/consume'
+import Papa from 'papaparse'
 
 const { memOptions, tagOptions } = useOutcomeData()
 
@@ -11,6 +12,12 @@ const consumeStore = useConsumeStore()
 
 const filterData = ref(consumeStore.outcomeList)
 const filterFlag = ref(false)
+
+const sumData = computed(() => {
+  return filterData.value.reduce((pre, cur) => {
+    return pre + cur.amount
+  }, 0)
+})
 
 onMounted(() => {
   if (consumeStore.outcomeList.length === 0) consumeStore.getOutcomeData()
@@ -70,6 +77,47 @@ const handleAdd = () => {
 const handleClose = () => {
   drawer.value = false
 }
+
+const exportCSVOutcome = (type) => {
+  if (type === 'income') return
+  const csvData = filterData.value.map((row) => ({
+    交易时间: row.consumeDate,
+    交易类型: row.category,
+    交易金额: row.amount,
+    所属成员: row.memberName,
+    '收/支': '支出',
+    '来源/去向': row.recipient,
+    备注: row.userNote
+  }))
+  csvData.unshift({
+    交易时间: `导出时间: ${new Date().toLocaleString()}`,
+    交易类型: '',
+    交易金额: '',
+    所属成员: '',
+    '收/支': '',
+    '来源/去向': '',
+    备注: ''
+  })
+  csvData.unshift({
+    交易时间: '----------------------支付账单明细列表--------------------',
+    交易类型: '',
+    交易金额: '',
+    所属成员: '',
+    '收/支': '',
+    '来源/去向': '',
+    备注: ''
+  })
+  const csv = Papa.unparse(csvData)
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+  const link = document.createElement('a')
+  const url = URL.createObjectURL(blob)
+  link.setAttribute('href', url)
+  link.setAttribute('download', 'table-data.csv')
+  link.style.visibility = 'hidden'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
 </script>
 
 <template>
@@ -85,6 +133,15 @@ const handleClose = () => {
           @add="handleAdd"
         >
         </FilterBox>
+      </div>
+      <div class="statistic-container mb-10">
+        <StatisticContainer
+          :data="sumData"
+          color="#a0d911"
+          type="outcome"
+          @export="exportCSVOutcome"
+        >
+        </StatisticContainer>
       </div>
       <div class="table-container">
         <CardContainer>

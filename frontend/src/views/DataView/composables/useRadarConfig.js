@@ -1,5 +1,5 @@
 import { useConsumeStore, useMemberStore } from '@/stores'
-
+import config from './config'
 export const useRadarConfig = (memId, date, type) => {
   const consumeStore = useConsumeStore()
   const memberStore = useMemberStore()
@@ -79,7 +79,6 @@ export const useRadarConfig = (memId, date, type) => {
   }
 
   const { legend, indicatorsData, seriesData } = processData(filterData)
-
   const optionPost = {
     title: {
       text: `${name}收支类型`,
@@ -91,33 +90,15 @@ export const useRadarConfig = (memId, date, type) => {
       //   ['Allocated Budget', 'Actual Spending']
     },
     radar: {
-      // shape: 'circle',
       radius: '60%',
       indicator: indicatorsData
-      //   [
-      //     { name: 'Sales', max: 6500 },
-      //     { name: 'Administration', max: 16000 },
-      //     { name: 'Information Technology', max: 30000 },
-      //     { name: 'Customer Support', max: 38000 },
-      //     { name: 'Development', max: 52000 },
-      //     { name: 'Marketing', max: 25000 }
-      //   ]
     },
+    color: config.color[type],
     series: [
       {
         name: 'Budget vs spending',
         type: 'radar',
         data: seriesData
-        // [
-        //   {
-        //     value: [4200, 3000, 20000, 35000, 50000, 18000],
-        //     name: 'Allocated Budget'
-        //   },
-        //   {
-        //     value: [5000, 14000, 28000, 26000, 42000, 21000],
-        //     name: 'Actual Spending'
-        //   }
-        // ]
       }
     ],
     tooltip: {

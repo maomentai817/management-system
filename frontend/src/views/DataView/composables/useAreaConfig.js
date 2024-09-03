@@ -1,4 +1,5 @@
 import { useConsumeStore, useMemberStore } from '@/stores'
+import config from './config'
 export const useAreaConfig = (memId, date, type) => {
   const consumeStore = useConsumeStore()
   const memberStore = useMemberStore()
@@ -57,6 +58,7 @@ export const useAreaConfig = (memId, date, type) => {
 
   // 获取去重后的数据
   const areaChartData = processDataForAreaChart(dataList, date)
+  // console.log(areaChartData)
   if (date.length) {
     areaChartData.forEach((item) => {
       item.month = item.month.slice(5, 10)
@@ -97,6 +99,7 @@ export const useAreaConfig = (memId, date, type) => {
     if (type === 'income') return `${name} 月度收入趋势`
     return `${name} 月度支出趋势`
   }
+
   const optionPost = {
     title: {
       text: titleText(),
@@ -111,15 +114,7 @@ export const useAreaConfig = (memId, date, type) => {
     yAxis: {
       type: 'value'
     },
-    // color: [
-    //   '#b7eb8f',
-    //   '#95de64',
-    //   '#73d13d',
-    //   '#52c41a',
-    //   '#389e0d',
-    //   '#237804',
-    //   '#135200'
-    // ],
+    color: config.color[type],
     tooltip: {
       trigger: 'axis'
     },

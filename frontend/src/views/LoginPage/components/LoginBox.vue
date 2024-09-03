@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores'
 import Vcode from 'vue3-puzzle-vcode'
@@ -68,6 +68,19 @@ const proceedToLogin = async () => {
     ElMessage.error('请先完成验证')
   }
 }
+
+const handleKeyDown = (event) => {
+  if (event.key === 'Enter') {
+    onSubmit()
+  }
+}
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown)
+})
 </script>
 
 <template>

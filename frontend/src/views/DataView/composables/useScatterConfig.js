@@ -1,8 +1,8 @@
-import { useConsumeStore, useMemberStore } from '@/stores'
+
+import { useConsumeStore } from '@/stores'
 
 export const useScatterConfig = (memId, date, type) => {
   const consumeStore = useConsumeStore()
-  const memberStore = useMemberStore()
 
   let dataPre = []
   const dataDeal = (list) => {
@@ -41,7 +41,7 @@ export const useScatterConfig = (memId, date, type) => {
 
     for (const item of list) {
       const { name, date, amount } = item
-      // console.log('test origin data' ,list)
+
 
       if (!groupedData[name]) {
         groupedData[name] = {}
@@ -110,13 +110,13 @@ export const useScatterConfig = (memId, date, type) => {
 
   const { legend, seriesData } = processData(filterData)
 
-  console.log('here is the ScatterData', seriesData)
+
   const optionPost = {
     title: {
       text: '收支日期图',
       bottom: '10',
       left: 'center'
-      // subtext: 'Data from: Heinz 2003'
+
     },
     grid: {
       left: '3%',
@@ -157,15 +157,7 @@ export const useScatterConfig = (memId, date, type) => {
         }
       }
     },
-    toolbox: {
-      feature: {
-        dataZoom: {},
-        brush: {
-          type: ['rect', 'polygon', 'clear']
-        }
-      }
-    },
-    brush: {},
+
     legend: {
       data: legend,
       left: 'center',
@@ -187,18 +179,12 @@ export const useScatterConfig = (memId, date, type) => {
                 // 只显示每个月的第一个日期
                 return day === 1 ? `${year}-${month}` : ''
               }
-          // interval: 1,
-          // hideOverlap: true
-          // showMinLable: false
-          // rotate: memId ? '45' : ''
+
         },
         splitLine: {
           show: false
         }
-        // splitNumber: 10,
-        // minInterval: ,
-        // maxInterval: 10,
-        // interval: 1,
+
       }
     ],
     yAxis: [

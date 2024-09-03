@@ -6,6 +6,7 @@ import FilterBox from './modules/FilterBox/FilterBox.vue'
 import TableContainer from './modules/TableContainer/TableContainer.vue'
 import DrawerContainer from './modules/DrawerContainer/DrawerContainer.vue'
 import UglyAvatar from './modules/UglyAvatar/UglyAvatar.vue'
+import StatisticContainer from './modules/StatisticContainer/StatisticContainer.vue'
 
 export const componentPlugin = {
   install(app) {
@@ -16,5 +17,6 @@ export const componentPlugin = {
     app.component('TableContainer', TableContainer)
     app.component('DrawerContainer', DrawerContainer)
     app.component('UglyAvatar', UglyAvatar)
+    app.component('StatisticContainer', StatisticContainer)
   }
 }

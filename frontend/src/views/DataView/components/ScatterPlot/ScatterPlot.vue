@@ -31,8 +31,9 @@ function updateChart() {
     props.type
   )
   optionPost.value = newOption
-  myChart.setOption(optionPost)
-}
+
+  myChart.setOption(optionPost.value)
+
 
 const optionPost = ref(null)
 onMounted(() => {

@@ -1,4 +1,5 @@
 import { useConsumeStore, useMemberStore } from '@/stores'
+import config from './config'
 
 export const usePieConfig = (memId, date, type) => {
   const consumeStore = useConsumeStore()
@@ -39,22 +40,13 @@ export const usePieConfig = (memId, date, type) => {
 
   // 获取去重后的数据
   const uniqueDataPost = processData(dataList)
-
   const optionPost = {
     title: {
       text: `${name} 收支类型分类`,
       bottom: '10',
       left: 'center'
     },
-    // color: [
-    //   '#b7eb8f',
-    //   '#95de64',
-    //   '#73d13d',
-    //   '#52c41a',
-    //   '#389e0d',
-    //   '#237804',
-    //   '#135200'
-    // ],
+    color: config.color[type],
     tooltip: {
       trigger: 'item'
     },

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { formatDate } from '@/utils/formatTime'
+
 const props = defineProps({
   type: {
     type: Boolean,

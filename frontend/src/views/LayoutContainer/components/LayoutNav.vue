@@ -74,7 +74,7 @@ const logout = () => {
     setTimeout(() => {
       router.replace('/login')
       ElMessage.success('退出成功')
-    }, 1000)
+    }, 700)
   })
 }
 </script>
