@@ -1,5 +1,5 @@
 const axios = require('axios');
-
+const db = require('../db/index.js')
 let msgList = []
 
 exports.clearMsgList = (req,res) => {
@@ -27,12 +27,77 @@ async function getAccessToken() {
         console.error('Error getting access token:', error);
     }
 }
+function getData (memId, date, type) {
+  let sqlStr = "SELECT consume.memId, amount, transactionType, DATE_FORMAT(consumeDate, '%Y-%m-%d') AS consumeDate, recipient, category, userNote FROM consume WHERE isDeleted=0"; // 初始化SQL语句，1=1是为了方便后面添加条件
+  const params = [];
 
+  if (memId) {
+    sqlStr += ' AND memId = ?';
+    params.push(memId);
+  }
+
+  if (date) {
+    sqlStr += ' AND DATE_FORMAT(consumeDate, "%Y-%m") = ?';
+    params.push(date);
+  }
+
+  if (type && type !== 'all') {
+    const transactionType = type === 'income' ? 1 : 0;
+    sqlStr += ' AND transactionType = ?';
+    params.push(transactionType);
+  }
+
+  console.log('params',params)
+
+  return new Promise((resolve,reject) => {
+    db.query(sqlStr,params, (error, results) => {
+      if(error) {
+        console.log('error',error)
+        reject(error)
+      }
+      console.log('results')
+      resolve(results)
+    })
+  })
+
+}
+async function convertToCSV(array) {
+  const headers = ['memId',  'amount', 'transactionType', 'consumeDate', 'recipient', 'category',  'userNote'];
+  const csvRows = [];
+
+  // 添加表头
+  csvRows.push(headers.join(','));
+
+  // 添加数据行
+  array.forEach(item => {
+    const row = [
+      item.memId,
+      item.amount,
+      item.transactionType,
+      item.consumeDate, 
+      item.recipient,
+      item.category,
+      item.userNote
+    ];
+    csvRows.push(row.join(','));
+  });
+
+  return csvRows.join(' ');
+}
 // 主函数
 exports.financialHelper = async (req,res) => {
-
-  msgList.push({role:'user',content:req.body.message})
+  if(req.query.memId || req.query.date || (req.query.type === 'income' || req.query.type ==='outcome')) {
+    const rowData = await getData(req.query.memId, req.query.date, req.query.type)
+    const data = await convertToCSV(rowData)
+    // console.log('data',data)
+    msgList.push({
+      role:'user',
+      content: `请对以下数据进行分析，并给出收支建议,其中transactionType属性0为支出，1为收入${data}`
+    })
+  }
+  else msgList.push({role:'user',content:req.body.message})
   // console.log(req.body.message,msgList)
+  console.log('msgList before ask', msgList)
   const accessToken = await getAccessToken();
   const url = `https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions_pro?access_token=${accessToken}`;
     
@@ -86,7 +151,7 @@ exports.financialHelper = async (req,res) => {
 
     response.data.on('end', () => {
       msgList.push({role: 'assistant', content: textRes})
-      // console.log('msgList after response: ',msgList)
+      console.log('msgList after response: ',msgList)
       res.end(); // 结束响应
     });
 
