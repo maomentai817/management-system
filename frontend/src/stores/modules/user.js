@@ -10,7 +10,7 @@ export const useUserStore = defineStore(
     // actions
     const getUserInfo = async ({ username, password }) => {
       const res = await loginAPI({ username, password })
-      console.log(res)
+      // console.log(res)
       if (res.status === 200) {
         userInfo.value = res.data
       }
@@ -20,14 +20,14 @@ export const useUserStore = defineStore(
       userInfo.value = {}
     }
 
-    const updateAvatar = async (baseStr) => {
-      await updateAvatarAPI(baseStr)
+    const updateAvatar = async (baseStr, username) => {
+      await updateAvatarAPI(baseStr, username)
       userInfo.value.avatar = baseStr
     }
 
-    const updateUsername = async (username) => {
-      await updateUsernameAPI(username)
-      userInfo.value.username = username
+    const updateUsername = async (username, newUsername) => {
+      await updateUsernameAPI(username, newUsername)
+      userInfo.value.username = newUsername
     }
     // getters
     return {

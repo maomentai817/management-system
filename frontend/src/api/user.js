@@ -16,9 +16,9 @@ export const loginAPI = ({ username, password }) => {
 /**
  * @description 修改头像
  */
-export const updateAvatarAPI = (baseStr) => {
+export const updateAvatarAPI = (baseStr, username) => {
   return instance({
-    url: '/userinfo/avatar',
+    url: `/userinfo/avatar?username=${username}`,
     method: 'post',
     data: { avatar: baseStr }
   })
@@ -27,10 +27,10 @@ export const updateAvatarAPI = (baseStr) => {
 /**
  * @description 修改用户名
  */
-export const updateUsernameAPI = (username) => {
+export const updateUsernameAPI = (username, newUsername) => {
   return instance({
-    url: '/userinfo/name',
+    url: `/userinfo/name?username=${username}`,
     method: 'post',
-    data: { username: username }
+    data: { username: newUsername }
   })
 }

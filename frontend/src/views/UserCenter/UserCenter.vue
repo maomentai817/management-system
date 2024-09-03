@@ -16,7 +16,7 @@ const nameDeal = (username) => {
 }
 onMounted(() => {
   name.value = nameDeal(userStore.userInfo.username)
-  console.log(name.value)
+  // console.log(name.value)
 })
 watch(
   () => userStore.userInfo.username,
@@ -43,7 +43,7 @@ function convertToBase64(file) {
 }
 const beforeAvatarUpload = async (e) => {
   baseStr.value = await convertToBase64(e)
-  userStore.updateAvatar(baseStr.value)
+  userStore.updateAvatar(baseStr.value, userStore.userInfo.username)
   ElMessage.success('头像修改成功')
 }
 
@@ -65,7 +65,7 @@ const dialogClose = () => {
 const updateUsername = () => {
   formRef.value.validate(async (valid) => {
     if (valid) {
-      userStore.updateUsername(form.value.name)
+      userStore.updateUsername(userStore.userInfo.username, form.value.name)
       dialogVisible.value = false
     }
   })
