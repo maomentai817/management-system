@@ -33,8 +33,7 @@ function updateChart() {
   optionPost.value = newOption
 
   myChart.setOption(optionPost.value)
-
-
+}
 const optionPost = ref(null)
 onMounted(() => {
   const chartDom = document.getElementById('Scatter-main')
